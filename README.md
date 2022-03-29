@@ -20,8 +20,8 @@ The setup:
 
 Commands used to run the tests are in the relevant log files.
 
-`etc.gradualizer-tests.ab75f28.log` contains `ok | failed` summary for each test file.
-`etc.gradualizer-tests.ab75f28.long.log` contains the actual logs returned from ETC for inspection.
+`etc.gradualizer-tests.ab75f28.log` contains an `ok | failed` summary for each test file.
+`etc.gradualizer-tests.ab75f28.long.log` contains the actual logs returned from ETC.
 
 For comparison with Gradualizer please refer to Gradualizer CI results:
 - all `should_fail` tests fail type checking,
