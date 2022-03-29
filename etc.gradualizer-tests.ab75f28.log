@@ -1,0 +1,224 @@
+$
+18:21:21 erszcz @ x6 : ~/work/erszcz/gradualizer/test ((f044c35...) %)
+$ git co upstream/master
+Previous HEAD position was f044c35 Fix exhaustive_refinable_map_variants
+HEAD is now at ab75f28 Merge pull request #396 from erszcz/point-readme-at-gradient
+git18:21:32 erszcz @ x6 : ~/work/erszcz/gradualizer/test ((ab75f28...) %)
+$ git l -1
+ab75f28 2022-03-25 Merge pull request #396 from erszcz/point-readme-at-gradient
+18:21:32 erszcz @ x6 : ~/work/erszcz/gradualizer/test ((ab75f28...) %)
+$ for file in $(find should_pass known_problems/should_pass should_fail known_problems/should_fail -type f -a -name \*.erl); do printf "%s\t" $file ; timeout -s KILL 2s /Users/erszcz/work/vrnithinkumar/ETC/etc $file 2>&1 >/dev/null && echo ok || echo failed; done
+should_pass/unary_plus.erl	failed
+should_pass/user_type_in_pattern_body.erl	failed
+should_pass/refine_comparison.erl	ok
+should_pass/negate_none.erl	failed
+should_pass/map_field_valid_update.erl	failed
+should_pass/covariant_map_keys.erl	ok
+should_pass/qlc_test.erl	ok
+should_pass/recursive_types_passing.erl	Killed: 9
+failed
+should_pass/int.erl	ok
+should_pass/alias_in_pattern.erl	failed
+should_pass/opaque.erl	failed
+should_pass/map_passing_expr.erl	ok
+should_pass/binary_literal_pattern.erl	failed
+should_pass/operator_pattern.erl	failed
+should_pass/minus.erl	failed
+should_pass/listsspecs.erl	failed
+should_pass/nested_pattern_match.erl	failed
+should_pass/any.erl	ok
+should_pass/minimised_gradualizer_fmt.erl	Killed: 9
+failed
+should_pass/record_refinement.erl	failed
+should_pass/flow.erl	ok
+should_pass/send.erl	ok
+should_pass/iodata.erl	failed
+should_pass/varbind_in_block.erl	ok
+should_pass/underscore.erl	ok
+should_pass/pattern_with_ty_vars.erl	ok
+should_pass/any_pattern.erl	failed
+should_pass/type_variable.erl	failed
+should_pass/bc.erl	failed
+should_pass/try.erl	failed
+should_pass/intersection.erl	failed
+should_pass/cyclic_otp_specs.erl	ok
+should_pass/factorial.erl	ok
+should_pass/issue131.erl	ok
+should_pass/fun_spec.erl	ok
+should_pass/varbind_in_function_head.erl	failed
+should_pass/map_pattern.erl	failed
+should_pass/operator_subtypes.erl	failed
+should_pass/nonempty_cons.erl	ok
+should_pass/messaging.erl	failed
+should_pass/imported.erl	ok
+should_pass/nonempty_string.erl	failed
+should_pass/return_fun.erl	failed
+should_pass/map_creation.erl	ok
+should_pass/ann_types.erl	failed
+should_pass/type_refinement.erl	failed
+should_pass/andalso_any.erl	failed
+should_pass/remote_types.erl	failed
+should_pass/case_of_record_with_user_defined.erl	failed
+should_pass/bitstring.erl	failed
+should_pass/sets_set.erl	ok
+should_pass/pattern_bind_reuse.erl	failed
+should_pass/case.erl	ok
+should_pass/bool.erl	failed
+should_pass/varbind_in_case.erl	failed
+should_pass/records.erl	failed
+should_pass/map_update_with_record_field.erl	Killed: 9
+failed
+should_pass/if_expr.erl	ok
+should_pass/fun_capture.erl	failed
+should_pass/map_passing_subtyping.erl	failed
+should_pass/preludes.erl	ok
+should_pass/lc.erl	failed
+should_pass/shortcut_ops.erl	failed
+should_pass/record_var.erl	failed
+should_pass/named_fun_infer.erl	failed
+should_pass/record_with_user_defined.erl	failed
+should_pass/record_info.erl	failed
+should_pass/type_vars_term.erl	ok
+should_pass/var_fun.erl	failed
+should_pass/tuple_union.erl	ok
+should_pass/tuple_union_pat.erl	ok
+should_pass/user_types.erl	ok
+should_pass/varbind_in_lc.erl	failed
+should_pass/guard.erl	failed
+should_pass/pattern_record.erl	failed
+should_pass/block_scope.erl	failed
+should_pass/map_update1.erl	failed
+should_pass/intersection_with_any.erl	ok
+should_pass/tuple.erl	ok
+should_pass/record_wildcard.erl	failed
+should_pass/list.erl	failed
+should_pass/other_module.erl	ok
+should_pass/annotated_types.erl	failed
+should_pass/variable_binding.erl	failed
+should_pass/float.erl	ok
+should_pass/catch_expr.erl	failed
+should_pass/map.erl	ok
+should_pass/named_fun.erl	failed
+should_pass/type_pattern.erl	failed
+should_pass/stuff_as_top.erl	failed
+should_pass/bounded_funs.erl	failed
+should_pass/list_infer.erl	ok
+should_pass/var.erl	ok
+should_pass/type_decl.erl	ok
+should_pass/map_as_argument_update.erl	failed
+should_pass/scope.erl	ok
+known_problems/should_pass/recursive_types.erl	Killed: 9
+failed
+known_problems/should_pass/fun_subtyping.erl	ok
+known_problems/should_pass/arith_op_arg_types.erl	ok
+known_problems/should_pass/intersection.erl	ok
+known_problems/should_pass/refine_bound_var_on_mismatch.erl	ok
+known_problems/should_pass/error_in_guard.erl	failed
+known_problems/should_pass/map_update2.erl	failed
+known_problems/should_pass/type_vars.erl	ok
+known_problems/should_pass/refine_list_tail.erl	ok
+known_problems/should_pass/rigid_type_variables.erl	ok
+known_problems/should_pass/list_tail.erl	failed
+known_problems/should_pass/intersection_with_any.erl	ok
+known_problems/should_pass/map_union.erl	ok
+known_problems/should_pass/generator_var_shadow.erl	failed
+known_problems/should_pass/refine_mismatch_using_guard_bifs.erl	failed
+should_fail/rel_op.erl	failed
+should_fail/record_field.erl	failed
+should_fail/covariant_map_keys.erl	ok
+should_fail/record_update.erl	failed
+should_fail/record_info_fail.erl	failed
+should_fail/map_pattern_fail.erl	failed
+should_fail/pp_intersection.erl	failed
+should_fail/unreachable_after_refinement.erl	ok
+should_fail/match.erl	failed
+should_fail/literal_patterns.erl	failed
+should_fail/tuple_union_refinement.erl	ok
+should_fail/call.erl	failed
+should_fail/no_idempotent_xor.erl	ok
+should_fail/map_literal.erl	failed
+should_fail/operator_pattern.erl	failed
+should_fail/map_type_error.erl	failed
+should_fail/record_refinement_fail.erl	failed
+should_fail/branch.erl	failed
+should_fail/logic_op.erl	failed
+should_fail/union_with_any.erl	failed
+should_fail/send.erl	ok
+should_fail/exhaustive_user_type.erl	failed
+should_fail/exhaustive_type.erl	ok
+should_fail/tuple_union_fail.erl	failed
+should_fail/record_index.erl	failed
+should_fail/arg.erl	failed
+should_fail/intersection_check.erl	failed
+should_fail/arity_mismatch.erl	failed
+should_fail/exhaustive_float.erl	failed
+should_fail/list_op.erl	failed
+should_fail/map_field_invalid_update.erl	failed
+should_fail/opaque_fail.erl	failed
+should_fail/map_failing_expr.erl	failed
+should_fail/list_union_fail.erl	failed
+should_fail/bc.erl	failed
+should_fail/lc_not_list.erl	failed
+should_fail/map_fail.erl	ok
+should_fail/return_fun_fail.erl	failed
+should_fail/tuple_union_arg.erl	ok
+should_fail/generator.erl	failed
+should_fail/exhaustive_refinable_map_variants.erl	ok
+should_fail/messaging.erl	failed
+should_fail/map_entry.erl	ok
+should_fail/guard_fail.erl	failed
+should_fail/pattern_record_fail.erl	failed
+should_fail/case_pattern2.erl	failed
+should_fail/type_refinement.erl	ok
+should_fail/string_literal.erl	failed
+should_fail/depth.erl	ok
+should_fail/bin_expression.erl	failed
+should_fail/tuple_union_pattern.erl	failed
+should_fail/map_failing_subtyping.erl	failed
+should_fail/unary_plus_fail.erl	failed
+should_fail/record_exhaustive.erl	failed
+should_fail/exhaustive.erl	failed
+should_fail/lambda_not_fun.erl	failed
+should_fail/record.erl	failed
+should_fail/bin_type_error.erl	failed
+should_fail/exhaustive_string_variants.erl	failed
+should_fail/cyclic_type_vars.erl	ok
+should_fail/shortcut_ops.erl	failed
+should_fail/recursive_types_failing.erl	Killed: 9
+failed
+should_fail/intersection_infer.erl	failed
+should_fail/named_fun_infer.erl	failed
+should_fail/infer_enabled.erl	failed
+should_fail/case_pattern.erl	failed
+should_fail/iodata_fail.erl	failed
+should_fail/tuple_union.erl	failed
+should_fail/nonempty_string_fail.erl	failed
+should_fail/pattern.erl	failed
+should_fail/unary_op.erl	failed
+should_fail/intersection_with_any.erl	ok
+should_fail/branch2.erl	failed
+should_fail/exhaustive_remote_user_type.erl	failed
+should_fail/record_wildcard.erl	failed
+should_fail/catch_expr.erl	failed
+should_fail/imported_undef.erl	failed
+should_fail/literal_char.erl	failed
+should_fail/named_fun.erl	failed
+should_fail/nil.erl	failed
+should_fail/list_infer.erl	failed
+should_fail/annotated_types_fail.erl	failed
+should_fail/arith_op.erl	failed
+should_fail/cons.erl	failed
+known_problems/should_fail/lambda_wrong_args.erl	failed
+known_problems/should_fail/sample.erl	failed
+known_problems/should_fail/exhaustive_remote_map_variants.erl	ok
+known_problems/should_fail/exhaustive_map_variants.erl	ok
+known_problems/should_fail/refine_ty_vars.erl	ok
+known_problems/should_fail/infer_any_pattern.erl	failed
+known_problems/should_fail/guard_fail.erl	ok
+known_problems/should_fail/rigid_type_variables.erl	failed
+known_problems/should_fail/intersection_with_any_fail.erl	failed
+known_problems/should_fail/arith_op.erl	failed
+18:24:19 erszcz @ x6 : ~/work/erszcz/gradualizer/test ((ab75f28...) %)
+$
+18:34:16 erszcz @ x6 : ~/work/erszcz/gradualizer/test ((ab75f28...) %)
+$
