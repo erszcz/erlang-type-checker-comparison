@@ -16,7 +16,7 @@ The setup:
     https://github.com/josefs/Gradualizer/tree/ab75f28f9e6f6195c01ddd6a132cd7a07b7e52a2
 
 -   forked ETC - a small fix on top of upstream was necessary to get proper error code reporting to shell
-    https://github.com/erszcz/ETC/tree/3836052e3b5c2bb28237a71c557dab3bab56ef20
+    https://github.com/erszcz/ETC/commit/677c763d93fae7fdc326cd9e028c0f59f1803037
 
 Commands used to run the tests are in the relevant log files.
 
