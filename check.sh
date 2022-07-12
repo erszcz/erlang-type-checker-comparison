@@ -68,3 +68,66 @@ for file in $SHOULD_PASS; do
 
         echo
 done
+
+for file in $KNOWN_PROBLEMS_SHOULD_PASS; do
+        printf "%s\n" $file
+
+        printf "%14s\t" dialyzer
+        timeout -s KILL $TIMEOUT $DIALYZER --plt $DIALYZER_PLT $file 2>&1 >/dev/null \
+                && echo ok \
+                || echo failed
+
+        printf "%14s\t" etc
+        timeout -s KILL $TIMEOUT $ETC $file 2>&1 >/dev/null \
+                && echo ok \
+                || echo failed
+
+        printf "%14s\t" gradualizer
+        timeout -s KILL $TIMEOUT $GRADUALIZER -pa test_data -- $file 2>&1 >/dev/null \
+                && echo ok \
+                || echo failed
+
+        echo
+done
+
+for file in $SHOULD_FAIL; do
+        printf "%s\n" $file
+
+        printf "%14s\t" dialyzer
+        timeout -s KILL $TIMEOUT $DIALYZER --plt $DIALYZER_PLT $file 2>&1 >/dev/null \
+                && echo ok \
+                || echo failed
+
+        printf "%14s\t" etc
+        timeout -s KILL $TIMEOUT $ETC $file 2>&1 >/dev/null \
+                && echo ok \
+                || echo failed
+
+        printf "%14s\t" gradualizer
+        timeout -s KILL $TIMEOUT $GRADUALIZER -pa test_data -- $file 2>&1 >/dev/null \
+                && echo ok \
+                || echo failed
+
+        echo
+done
+
+for file in $KNOWN_PROBLEMS_SHOULD_FAIL; do
+        printf "%s\n" $file
+
+        printf "%14s\t" dialyzer
+        timeout -s KILL $TIMEOUT $DIALYZER --plt $DIALYZER_PLT $file 2>&1 >/dev/null \
+                && echo ok \
+                || echo failed
+
+        printf "%14s\t" etc
+        timeout -s KILL $TIMEOUT $ETC $file 2>&1 >/dev/null \
+                && echo ok \
+                || echo failed
+
+        printf "%14s\t" gradualizer
+        timeout -s KILL $TIMEOUT $GRADUALIZER -pa test_data -- $file 2>&1 >/dev/null \
+                && echo ok \
+                || echo failed
+
+        echo
+done
