@@ -1,0 +1,15 @@
+Opts: %{
+  dialyzer: "dialyzer",
+  dialyzer_plt: "/Users/erszcz/work/erszcz/gradualizer/.dialyzer_plt",
+  etc: "/Users/erszcz/work/vrnithinkumar/ETC/etc",
+  gradualizer: "/Users/erszcz/work/erszcz/gradualizer/bin/gradualizer",
+  gradualizer_dir: "/Users/erszcz/work/erszcz/gradualizer",
+  timeout: "5"
+}
+Meta: %{
+  dialyzer_version: "Dialyzer version v4.4.1\n",
+  erlang_version: "erlang          24.0.5          /Users/erszcz/.tool-versions\n",
+  etc_version: "677c763\n",
+  gradualizer_tests: "0.1.3-253-g748cbf8\n",
+  gradualizer_version: "Gradualizer v0.1.3-253-g748cbf8\n"
+}
