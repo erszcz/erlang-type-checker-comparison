@@ -1,0 +1,62 @@
+# Dialyzer, ETC, and Gradualizer
+
+```elixir
+Mix.install([
+  {:csv, "~> 2.4"},
+  {:httpotion, "~> 3.1.0"},
+  {:kino_vega_lite, "~> 0.1.1"}
+])
+```
+
+## Let's get the data
+
+```elixir
+tsv_url =
+  "https://gist.githubusercontent.com/erszcz/4d43a77464c87a514e71eecf2811af63/raw/bf8d18cfd236e82bba794c169b57f1f284475ddd/check.2022-07-13_170833.tsv"
+
+response = HTTPotion.get(tsv_url)
+```
+
+```elixir
+tab = 0x09
+
+{:ok, stream} =
+  response.body
+  |> StringIO.open()
+
+tsv =
+  stream
+  |> IO.binstream(:line)
+  |> CSV.decode!(separator: tab)
+  |> Enum.into([])
+  |> Enum.drop(1)
+
+headers = [
+  :type,
+  :dialyzer,
+  :etc,
+  :gradualizer,
+  :dialyzer_seconds,
+  :etc_seconds,
+  :gradualizer_seconds,
+  :file
+]
+
+series =
+  tsv
+  |> Enum.zip()
+  |> Enum.map(&Tuple.to_list/1)
+
+series = Enum.zip(headers, series) |> Enum.into(%{})
+```
+
+<!-- livebook:{"attrs":{"chart_title":null,"height":null,"layers":[{"chart_type":"bar","color_field":"type","color_field_aggregate":null,"color_field_type":null,"data_variable":"series","x_field":"type","x_field_aggregate":null,"x_field_type":null,"y_field":"__count__","y_field_aggregate":null,"y_field_type":null}],"vl_alias":"Elixir.VegaLite","width":null},"kind":"Elixir.KinoVegaLite.ChartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+VegaLite.new()
+|> VegaLite.data_from_values(series, only: ["type"])
+|> VegaLite.mark(:bar)
+|> VegaLite.encode_field(:x, "type")
+|> VegaLite.encode(:y, aggregate: :count)
+|> VegaLite.encode_field(:color, "type")
+```
