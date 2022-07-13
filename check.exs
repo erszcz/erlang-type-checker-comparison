@@ -45,8 +45,8 @@ meta = %{
   gradualizer_version: System.cmd(opts.gradualizer, ["--version"]) |> elem(0)
 }
 
-#IO.inspect(opts, label: "Opts")
-#IO.inspect(meta, label: "Meta")
+IO.inspect(opts, label: "Opts")
+IO.inspect(meta, label: "Meta")
 #IO.inspect(tests, label: "Tests")
 
 
@@ -66,7 +66,7 @@ check_one = fn args ->
 end
 
 check = fn test_type, file ->
-  #IO.puts file
+  IO.puts file
   {dialyzer_res, dialyzer_time} = check_one.(dialyzer_args ++ [file])
   {etc_res, etc_time} = check_one.(etc_args ++ [file])
   {gradualizer_res, gradualizer_time} = check_one.(gradualizer_args ++ [file])
@@ -99,7 +99,7 @@ results = (
 #IO.inspect(headers, label: "Headers")
 #IO.inspect(results, label: "results", limit: :infinity)
 
-#IO.puts "TSV starts here"
+IO.puts "TSV starts here"
 
 headers = {"Test type", "Dialyzer", "Dialyzer time", "ETC", "ETC time", "Gradualizer", "Gradualizer time", "Test file"}
 headers |> Tuple.to_list() |> Enum.intersperse("\t") |> IO.puts()
