@@ -65,12 +65,14 @@ check_one = fn args ->
   end
 end
 
+headers = {"Test type", "Dialyzer", "ETC", "Gradualizer", "Dialyzer time", "ETC time", "Gradualizer time", "Test file"}
+
 check = fn test_type, file ->
   IO.puts file
   {dialyzer_res, dialyzer_time} = check_one.(dialyzer_args ++ [file])
   {etc_res, etc_time} = check_one.(etc_args ++ [file])
   {gradualizer_res, gradualizer_time} = check_one.(gradualizer_args ++ [file])
-  {test_type, dialyzer_res, dialyzer_time, etc_res, etc_time, gradualizer_res, gradualizer_time, file}
+  {test_type, dialyzer_res, etc_res, gradualizer_res, dialyzer_time, etc_time, gradualizer_time, file}
 end
 
 results_should_pass = for file <- tests.should_pass do
@@ -101,7 +103,6 @@ results = (
 
 IO.puts "TSV starts here"
 
-headers = {"Test type", "Dialyzer", "Dialyzer time", "ETC", "ETC time", "Gradualizer", "Gradualizer time", "Test file"}
 headers |> Tuple.to_list() |> Enum.intersperse("\t") |> IO.puts()
 
 for row <- results do
