@@ -14,7 +14,21 @@ It's the result of a short academic project into higher-rank polymorphism enable
 thanks to [Gradient](https://github.com/esl/gradient), also for Elixir.
 The project is experimental, but has decent coverage of the Erlang and Elixir syntax.
 
-This gist compares their functionality on the tests accumulated over time in Gradualizer's repository.
+The assumption of this comparison is to show that Gradualizer, while still experimental,
+is already useful in practice thanks to:
+
+-   good enough Erlang syntax coverage; as it turned out it's definitely better then ETC,
+    though there are some language constructs which lead to incorrect reports
+
+-   better performance than Dialyzer (significantly shorter run times on the same files,
+    no PLT build/check time);
+    in fact, thanks to [ErlangLS](https://erlang-ls.github.io/),
+    Gradualizer can be used real-time in the background of a programmer's editor
+
+-   easily understandable error messages
+
+This gist compares Dialyzer, ETC, and Gradualizer functionality on the tests accumulated over time
+in Gradualizer's repository.
 Thanks go to the volunteers who dedicated their time and effort to build the test harness.
 
 The setup:
