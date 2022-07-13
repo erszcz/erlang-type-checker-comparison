@@ -534,16 +534,7 @@ make: `.dialyzer_plt' is up to date.
 /Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/rigid_type_variables_pass.erl
       dialyzer	ok
            etc	ok
-   gradualizer	escript: exception error: no function clause matching 
-                 gradualizer_int:int_type_to_range({var,0,'A'}) (src/gradualizer_int.erl, line 106)
-  in function  gradualizer_int:negate_int_type/1 (src/gradualizer_int.erl, line 95)
-  in call from typechecker:do_type_check_expr/2 (src/typechecker.erl, line 1868)
-  in call from typechecker:type_check_expr/2 (src/typechecker.erl, line 1550)
-  in call from typechecker:do_type_check_expr_in/3 (src/typechecker.erl, line 2329)
-  in call from typechecker:type_check_expr_in/3 (src/typechecker.erl, line 2320)
-  in call from typechecker:check_clause/5 (src/typechecker.erl, line 3580)
-  in call from typechecker:'-check_clauses/5-fun-0-'/4 (src/typechecker.erl, line 3488)
-failed
+   gradualizer	failed
 
 /Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/fun_subtyping.erl
       dialyzer	ok
