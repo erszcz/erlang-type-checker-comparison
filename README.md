@@ -1,37 +1,50 @@
-# ETC results on Gradualizer tests
+# Comparison of Erlang type checkers: Dialyzer, ETC, and Gradualizer
 
-Gradualizer is a gradual type checker for Erlang and, thanks to Gradient, also for Elixir.
+[Dialyzer](https://www.erlang.org/doc/man/dialyzer.html) is a static analysis tool that identifies software discrepancies, such as definite type errors,
+code that has become dead or unreachable because of programming error, and unnecessary tests,
+in single Erlang modules or entire (sets of) applications.
+It was developerd by Kostis Sagonas and is now maintained by the OTP team.
+
+[ETC](https://github.com/vrnithinkumar/ETC) is a type checker described
+in ["Bidirectional typing for Erlang"](https://dl.acm.org/doi/10.1145/3471871.3472966)
+by Nithin Rajendrakumar and Annette Bieniusa.
+It's the result of a short academic project into higher-rank polymorphism enabled bidirectional type checking of Erlang code.
+
+[Gradualizer](https://github.com/josefs/Gradualizer) is a gradual type checker for Erlang and,
+thanks to [Gradient](https://github.com/esl/gradient), also for Elixir.
 The project is experimental, but has decent coverage of the Erlang and Elixir syntax.
-However, as of writing this there are known bugs in the trackers of both Gradualizer and Gradient.
 
-ETC is a bidirectional type checker for Erlang.
-It's the result of an academic project into higher-rank polymorphism enabled bidirectional typechecking of Erlang code.
-
-This gist compares their functionality on the tests accumulated over time in Gradualizer's repository
-thanks to the work of many people who volunteered their time and effort to write them.
+This gist compares their functionality on the tests accumulated over time in Gradualizer's repository.
+Thanks go to the volunteers who dedicated their time and effort to build the test harness.
 
 The setup:
 
--   upstream Gradualizer
-    https://github.com/josefs/Gradualizer/tree/ab75f28f9e6f6195c01ddd6a132cd7a07b7e52a2
+-   Dialyzer version v4.4.1
 
 -   forked ETC - a small fix on top of upstream was necessary to get proper error code reporting to shell
     https://github.com/erszcz/ETC/commit/677c763d93fae7fdc326cd9e028c0f59f1803037
 
-Commands used to run the tests are in the relevant log files.
+-   Gradualizer v0.1.3-253-g748cbf8 - https://github.com/josefs/Gradualizer/pull/429
 
-`etc.gradualizer-tests.ab75f28.log` contains an `ok | failed` summary for each test file.
-`etc.gradualizer-tests.ab75f28.long.log` contains the actual logs returned from ETC.
+The Elixir script used to generate the TSV results file is also available in this gist.
 
-For comparison with Gradualizer please refer to Gradualizer CI results:
-- all `should_fail` tests fail type checking,
-- all `should_pass` tests pass type checking,
-- `known_problems` are respectively known false negatives and false positives or, in some rare cases, typechecker crashes.
+The tests are grouped into four categories:
+- "should pass" tests - we know Gradualizer should pass when run on these
+- "should fail" tests - we know Gradualizer should NOT pass when run on
+  these, i.e. it should detect and report type errors
+- "known problems which should pass" - as the name implies, code examples
+  which should not lead to warnings or crashes of Gradualizer
+- "known problems which should fail" - negative of the above, i.e. code
+  examples with known issues, which should be detected by Gradualizer, but
+  are not yet (or Gradualizer crashes on them)
 
-That being said, as both projects are still considered experimental, it is expected some results won't be accurate.
+The results are summed up in the attached TSV file.
 
-One interesting example of a polymorphic function that is a Gradualizer false negative,
-but is properly type checked by ETC is:
+Dialyzer is quite mature, very stable, and even known by the slogan that "it's never wrong".
+ETC and Gradualizer, on the other hand, are still considered experimental.
+
+One interesting example of a polymorphic function that is a Gradualizer false negative
+(it does not raise an error though it should), but does not type check with ETC is:
 
 ```
 $ cat t3.erl
