@@ -64,7 +64,7 @@ tool_to_index = %{
 
 extract_tool = fn row, tool ->
   case Enum.at(row, tool_to_index[tool]) do
-    "ok" -> [tool]
+    "ok" -> [tool |> to_string()]
     _ -> []
   end
 end
@@ -90,6 +90,20 @@ by_test_type = %{
   "should_fail" => map_test_type_series_to_tools.(by_test_type["should_fail"]),
   "should_pass" => map_test_type_series_to_tools.(by_test_type["should_pass"])
 }
+```
+
+```elixir
+# Sanity check!
+[103, 16, 86, 11] = [
+  by_test_type["should_pass"] |> Enum.filter(fn e -> e == "all tests" end) |> length,
+  by_test_type["known_problems_should_pass"]
+  |> Enum.filter(fn e -> e == "all tests" end)
+  |> length,
+  by_test_type["should_fail"] |> Enum.filter(fn e -> e == "all tests" end) |> length,
+  by_test_type["known_problems_should_fail"]
+  |> Enum.filter(fn e -> e == "all tests" end)
+  |> length
+]
 ```
 
 <!-- livebook:{"attrs":{"chart_title":null,"height":null,"layers":[{"chart_type":"bar","color_field":"should_pass","color_field_aggregate":null,"color_field_type":null,"data_variable":"by_test_type","x_field":"should_pass","x_field_aggregate":null,"x_field_type":null,"y_field":"__count__","y_field_aggregate":null,"y_field_type":null}],"vl_alias":"Elixir.VegaLite","width":null},"kind":"Elixir.KinoVegaLite.ChartCell","livebook_object":"smart_cell"} -->
