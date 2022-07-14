@@ -1,0 +1,251 @@
+# Dialyzer, ETC, and Gradualizer 2
+
+```elixir
+Mix.install([
+  {:csv, "~> 2.4"},
+  {:httpotion, "~> 3.1.0"},
+  {:kino_vega_lite, "~> 0.1.1"}
+])
+```
+
+## Let's get the test data
+
+```elixir
+tsv_url =
+  "https://gist.githubusercontent.com/erszcz/4d43a77464c87a514e71eecf2811af63/raw/bf8d18cfd236e82bba794c169b57f1f284475ddd/check.2022-07-13_170833.tsv"
+
+response = HTTPotion.get(tsv_url)
+```
+
+```elixir
+tab = 0x09
+
+{:ok, stream} =
+  response.body
+  |> StringIO.open()
+
+tsv =
+  stream
+  |> IO.binstream(:line)
+  |> CSV.decode!(separator: tab)
+  |> Enum.into([])
+  |> Enum.drop(1)
+```
+
+```elixir
+headers = [
+  :type,
+  :dialyzer,
+  :etc,
+  :gradualizer,
+  :dialyzer_seconds,
+  :etc_seconds,
+  :gradualizer_seconds,
+  :file
+]
+
+# series by header
+by_header =
+  tsv
+  |> Enum.zip()
+  |> Enum.map(&Tuple.to_list/1)
+
+by_header = Enum.zip(headers, by_header) |> Enum.into(%{})
+```
+
+```elixir
+by_test_type = tsv |> Enum.group_by(&List.first/1)
+
+tool_to_index = %{
+  dialyzer: 1,
+  etc: 2,
+  gradualizer: 3
+}
+
+extract_tool = fn row, tool ->
+  case Enum.at(row, tool_to_index[tool]) do
+    "ok" -> [tool |> to_string() |> String.capitalize()]
+    _ -> []
+  end
+end
+
+map_test_type_series_to_tools = fn series ->
+  series
+  |> Enum.flat_map(fn row ->
+    [
+      ["All tests"],
+      extract_tool.(row, :dialyzer),
+      extract_tool.(row, :etc),
+      extract_tool.(row, :gradualizer)
+    ]
+    |> Enum.concat()
+  end)
+end
+
+by_test_type = %{
+  "known_problems_should_fail" =>
+    map_test_type_series_to_tools.(by_test_type["known_problems_should_fail"]),
+  "known_problems_should_pass" =>
+    map_test_type_series_to_tools.(by_test_type["known_problems_should_pass"]),
+  "should_fail" => map_test_type_series_to_tools.(by_test_type["should_fail"]),
+  "should_pass" => map_test_type_series_to_tools.(by_test_type["should_pass"])
+}
+```
+
+```elixir
+# Sanity check!
+[n_should_pass, n_known_problems_should_pass, n_should_fail, n_known_problems_should_fail] = [
+  by_test_type["should_pass"] |> Enum.filter(fn e -> e == "All tests" end) |> length,
+  by_test_type["known_problems_should_pass"]
+  |> Enum.filter(fn e -> e == "All tests" end)
+  |> length,
+  by_test_type["should_fail"] |> Enum.filter(fn e -> e == "All tests" end) |> length,
+  by_test_type["known_problems_should_fail"]
+  |> Enum.filter(fn e -> e == "All tests" end)
+  |> length
+]
+
+[103, 16, 86, 11] = [
+  n_should_pass,
+  n_known_problems_should_pass,
+  n_should_fail,
+  n_known_problems_should_fail
+]
+```
+
+## Analysis and comparison
+
+### Tests that should pass
+
+Higher is better.
+
+This chart depicts the number of tests which should pass, i.e. should type check. After all, **we do not want our type checkers to raise warnings about valid code.**
+
+Given we're considering code that's assumed to be valid, none of the type checkers should report warnings here. Cross-checking these tests with different type checkers allows to find bugs in tests or the type checkers themselves.
+
+Dialyzer reports only a few errors. Gradualizer, as expected, reports none. ETC fares quite poorly, passing only 1/3 of the tests, which suggests it might not cover the complete Erlang syntax.
+
+```elixir
+{should_pass_xs, should_pass_ys} =
+  by_test_type["should_pass"]
+  |> Enum.group_by(fn e -> e end)
+  |> Enum.map(fn {type, v} -> {type, length(v)} end)
+  |> Enum.unzip()
+
+should_pass = %{
+  "Tool" => should_pass_xs,
+  "Tests passed" => should_pass_ys
+}
+```
+
+<!-- livebook:{"attrs":{"chart_title":null,"height":300,"layers":[{"chart_type":"bar","color_field":"Tool","color_field_aggregate":null,"color_field_type":null,"data_variable":"should_pass","x_field":"Tool","x_field_aggregate":null,"x_field_type":null,"y_field":"Tests passed","y_field_aggregate":null,"y_field_type":"quantitative"}],"vl_alias":"Elixir.VegaLite","width":300},"kind":"Elixir.KinoVegaLite.ChartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+VegaLite.new(width: 300, height: 300)
+|> VegaLite.data_from_values(should_pass, only: ["Tool", "Tests passed"])
+|> VegaLite.mark(:bar)
+|> VegaLite.encode_field(:x, "Tool")
+|> VegaLite.encode_field(:y, "Tests passed", type: :quantitative)
+|> VegaLite.encode_field(:color, "Tool")
+```
+
+### Known problems: tests that should pass, but do not
+
+Lower is better.
+
+This chart depicts the number of tests which should pass, i.e. should type check, yet raise Gradualizer errors. In other words, __these are the false positives - invalid or misleading reports about non-issues.__
+
+Dialyzer reports only a single false positive and is a clear winner here! This confirms the slogan that _Dialyzer is never wrong_.
+ETC reports some of the errors, but not all of them.
+Gradualizer, as expected, reports errors for all of the tests.
+
+```elixir
+{known_problems_should_pass_xs, known_problems_should_pass_ys} =
+  by_test_type["known_problems_should_pass"]
+  |> Enum.group_by(fn e -> e end)
+  |> Enum.map(fn {type, v} -> {type, n_known_problems_should_pass - length(v)} end)
+  |> Enum.unzip()
+
+known_problems_should_pass = %{
+  "Tool" => known_problems_should_pass_xs ++ ["Gradualizer"],
+  "Errors detected" =>
+    [n_known_problems_should_pass] ++
+      Enum.drop(known_problems_should_pass_ys, 1) ++ [n_known_problems_should_pass]
+}
+```
+
+<!-- livebook:{"attrs":{"chart_title":null,"height":300,"layers":[{"chart_type":"bar","color_field":"Tool","color_field_aggregate":null,"color_field_type":null,"data_variable":"known_problems_should_pass","x_field":"Tool","x_field_aggregate":null,"x_field_type":null,"y_field":"Errors detected","y_field_aggregate":null,"y_field_type":"quantitative"}],"vl_alias":"Elixir.VegaLite","width":300},"kind":"Elixir.KinoVegaLite.ChartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+VegaLite.new(width: 300, height: 300)
+|> VegaLite.data_from_values(known_problems_should_pass, only: ["Tool", "Errors detected"])
+|> VegaLite.mark(:bar)
+|> VegaLite.encode_field(:x, "Tool")
+|> VegaLite.encode_field(:y, "Errors detected", type: :quantitative)
+|> VegaLite.encode_field(:color, "Tool")
+```
+
+### Tests which should fail
+
+Higher is better.
+
+This chart depicts the number of tests which should fail, i.e. should not type check. **These tests check that the warnings we want to see in our buggy code are actually generated.**
+
+Dialyzer seems to be somewhat permissive. ETC reports the majority of errors. Gradualizer properly reports all the errors.
+
+```elixir
+{should_fail_xs, should_fail_ys} =
+  by_test_type["should_fail"]
+  |> Enum.group_by(fn e -> e end)
+  |> Enum.map(fn {type, v} -> {type, n_should_fail - length(v)} end)
+  |> Enum.unzip()
+
+should_fail = %{
+  "Tool" => should_fail_xs ++ ["Gradualizer"],
+  "Errors detected" => [n_should_fail] ++ Enum.drop(should_fail_ys, 1) ++ [n_should_fail]
+}
+```
+
+<!-- livebook:{"attrs":{"chart_title":null,"height":300,"layers":[{"chart_type":"bar","color_field":"Tool","color_field_aggregate":null,"color_field_type":null,"data_variable":"should_fail","x_field":"Tool","x_field_aggregate":null,"x_field_type":null,"y_field":"Errors detected","y_field_aggregate":null,"y_field_type":"quantitative"}],"vl_alias":"Elixir.VegaLite","width":300},"kind":"Elixir.KinoVegaLite.ChartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+VegaLite.new(width: 300, height: 300)
+|> VegaLite.data_from_values(should_fail, only: ["Tool", "Errors detected"])
+|> VegaLite.mark(:bar)
+|> VegaLite.encode_field(:x, "Tool")
+|> VegaLite.encode_field(:y, "Errors detected", type: :quantitative)
+|> VegaLite.encode_field(:color, "Tool")
+```
+
+### Known problems: tests that should fail, but do not
+
+Higher is better.
+
+This chart depicts the number of tests which should fail, i.e. should not type check, but are known to type check with Gradualizer. In other words, **these are the errors that considered type checkers cannot find.** We have to rely on tests, code review, or other techniques to find them.
+
+Dialyzer detects some of the errors in these examples, ETC seems to detect even more. Gradualizer doesn't detect any of them, but the examples are crafted against this type checker, so it's expected.
+
+```elixir
+{known_problems_should_fail_xs, known_problems_should_fail_ys} =
+  by_test_type["known_problems_should_fail"]
+  |> Enum.group_by(fn e -> e end)
+  |> Enum.map(fn {type, v} -> {type, n_known_problems_should_fail - length(v)} end)
+  |> Enum.unzip()
+
+known_problems_should_fail = %{
+  "Tool" => known_problems_should_fail_xs,
+  "Errors detected" =>
+    [n_known_problems_should_fail] ++ Enum.drop(known_problems_should_fail_ys, 1)
+}
+```
+
+<!-- livebook:{"attrs":{"chart_title":null,"height":300,"layers":[{"chart_type":"bar","color_field":"Tool","color_field_aggregate":null,"color_field_type":null,"data_variable":"known_problems_should_fail","x_field":"Tool","x_field_aggregate":null,"x_field_type":null,"y_field":"Errors detected","y_field_aggregate":null,"y_field_type":"quantitative"}],"vl_alias":"Elixir.VegaLite","width":300},"kind":"Elixir.KinoVegaLite.ChartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+VegaLite.new(width: 300, height: 300)
+|> VegaLite.data_from_values(known_problems_should_fail, only: ["Tool", "Errors detected"])
+|> VegaLite.mark(:bar)
+|> VegaLite.encode_field(:x, "Tool")
+|> VegaLite.encode_field(:y, "Errors detected", type: :quantitative)
+|> VegaLite.encode_field(:color, "Tool")
+```
