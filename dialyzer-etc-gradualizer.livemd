@@ -8,7 +8,7 @@ Mix.install([
 ])
 ```
 
-## Let's get the data
+## Section
 
 ```elixir
 tsv_url =
@@ -30,7 +30,9 @@ tsv =
   |> CSV.decode!(separator: tab)
   |> Enum.into([])
   |> Enum.drop(1)
+```
 
+```elixir
 headers = [
   :type,
   :dialyzer,
@@ -42,21 +44,94 @@ headers = [
   :file
 ]
 
-series =
+# series by header
+by_header =
   tsv
   |> Enum.zip()
   |> Enum.map(&Tuple.to_list/1)
 
-series = Enum.zip(headers, series) |> Enum.into(%{})
+by_header = Enum.zip(headers, by_header) |> Enum.into(%{})
 ```
 
-<!-- livebook:{"attrs":{"chart_title":null,"height":null,"layers":[{"chart_type":"bar","color_field":"type","color_field_aggregate":null,"color_field_type":null,"data_variable":"series","x_field":"type","x_field_aggregate":null,"x_field_type":null,"y_field":"__count__","y_field_aggregate":null,"y_field_type":null}],"vl_alias":"Elixir.VegaLite","width":null},"kind":"Elixir.KinoVegaLite.ChartCell","livebook_object":"smart_cell"} -->
+```elixir
+by_test_type = tsv |> Enum.group_by(&List.first/1)
+
+tool_to_index = %{
+  dialyzer: 1,
+  etc: 2,
+  gradualizer: 3
+}
+
+extract_tool = fn row, tool ->
+  case Enum.at(row, tool_to_index[tool]) do
+    "ok" -> [tool]
+    _ -> []
+  end
+end
+
+map_test_type_series_to_tools = fn series ->
+  series
+  |> Enum.flat_map(fn row ->
+    [
+      ["all tests"],
+      extract_tool.(row, :dialyzer),
+      extract_tool.(row, :etc),
+      extract_tool.(row, :gradualizer)
+    ]
+    |> Enum.concat()
+  end)
+end
+
+by_test_type = %{
+  "known_problems_should_fail" =>
+    map_test_type_series_to_tools.(by_test_type["known_problems_should_fail"]),
+  "known_problems_should_pass" =>
+    map_test_type_series_to_tools.(by_test_type["known_problems_should_pass"]),
+  "should_fail" => map_test_type_series_to_tools.(by_test_type["should_fail"]),
+  "should_pass" => map_test_type_series_to_tools.(by_test_type["should_pass"])
+}
+```
+
+<!-- livebook:{"attrs":{"chart_title":null,"height":null,"layers":[{"chart_type":"bar","color_field":"should_pass","color_field_aggregate":null,"color_field_type":null,"data_variable":"by_test_type","x_field":"should_pass","x_field_aggregate":null,"x_field_type":null,"y_field":"__count__","y_field_aggregate":null,"y_field_type":null}],"vl_alias":"Elixir.VegaLite","width":null},"kind":"Elixir.KinoVegaLite.ChartCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 VegaLite.new()
-|> VegaLite.data_from_values(series, only: ["type"])
+|> VegaLite.data_from_values(by_test_type, only: ["should_pass"])
 |> VegaLite.mark(:bar)
-|> VegaLite.encode_field(:x, "type")
+|> VegaLite.encode_field(:x, "should_pass")
 |> VegaLite.encode(:y, aggregate: :count)
-|> VegaLite.encode_field(:color, "type")
+|> VegaLite.encode_field(:color, "should_pass")
+```
+
+<!-- livebook:{"attrs":{"chart_title":null,"height":null,"layers":[{"chart_type":"bar","color_field":"known_problems_should_pass","color_field_aggregate":null,"color_field_type":null,"data_variable":"by_test_type","x_field":"known_problems_should_pass","x_field_aggregate":null,"x_field_type":null,"y_field":"__count__","y_field_aggregate":null,"y_field_type":null}],"vl_alias":"Elixir.VegaLite","width":null},"kind":"Elixir.KinoVegaLite.ChartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+VegaLite.new()
+|> VegaLite.data_from_values(by_test_type, only: ["known_problems_should_pass"])
+|> VegaLite.mark(:bar)
+|> VegaLite.encode_field(:x, "known_problems_should_pass")
+|> VegaLite.encode(:y, aggregate: :count)
+|> VegaLite.encode_field(:color, "known_problems_should_pass")
+```
+
+<!-- livebook:{"attrs":{"chart_title":null,"height":null,"layers":[{"chart_type":"bar","color_field":"should_fail","color_field_aggregate":null,"color_field_type":null,"data_variable":"by_test_type","x_field":"should_fail","x_field_aggregate":null,"x_field_type":null,"y_field":"__count__","y_field_aggregate":null,"y_field_type":null}],"vl_alias":"Elixir.VegaLite","width":null},"kind":"Elixir.KinoVegaLite.ChartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+VegaLite.new()
+|> VegaLite.data_from_values(by_test_type, only: ["should_fail"])
+|> VegaLite.mark(:bar)
+|> VegaLite.encode_field(:x, "should_fail")
+|> VegaLite.encode(:y, aggregate: :count)
+|> VegaLite.encode_field(:color, "should_fail")
+```
+
+<!-- livebook:{"attrs":{"chart_title":null,"height":null,"layers":[{"chart_type":"bar","color_field":"known_problems_should_fail","color_field_aggregate":null,"color_field_type":null,"data_variable":"by_test_type","x_field":"known_problems_should_fail","x_field_aggregate":null,"x_field_type":null,"y_field":"__count__","y_field_aggregate":null,"y_field_type":null}],"vl_alias":"Elixir.VegaLite","width":null},"kind":"Elixir.KinoVegaLite.ChartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+VegaLite.new()
+|> VegaLite.data_from_values(by_test_type, only: ["known_problems_should_fail"])
+|> VegaLite.mark(:bar)
+|> VegaLite.encode_field(:x, "known_problems_should_fail")
+|> VegaLite.encode(:y, aggregate: :count)
+|> VegaLite.encode_field(:color, "known_problems_should_fail")
 ```
