@@ -249,3 +249,76 @@ VegaLite.new(width: 300, height: 300)
 |> VegaLite.encode_field(:y, "Errors detected", type: :quantitative)
 |> VegaLite.encode_field(:color, "Tool")
 ```
+
+## Some examples
+
+#### should_pass/return_fun.erl
+
+One of the few cases in `should_pass` tests where Dialyzer actually detects errors, whereas Gradualizer does not.
+
+```erlang
+-spec return_fun_no_spec() -> integer().
+return_fun_no_spec() -> fun no_spec/0.
+
+no_spec() -> ok.
+```
+
+Dialyzer:
+
+```
+return_fun.erl:28:2: Invalid type specification for function return_fun:return_fun_no_spec/0.
+The success typing is
+          () -> fun(() -> 'ok')
+```
+
+ETC:
+
+```
+test/should_pass/return_fun.erl: error in parse transform
+```
+
+Gradualizer - no error!
+
+Let's remember that by default Gradualizer doesn't infer types of functions with no specs.
+
+Gradualizer with `--infer`:
+
+```
+return_fun.erl:29:25: The fun expression is expected to have type integer()
+but it has type fun(() -> any())
+```
+
+Dialyzer seems to infer more types by default.
+However, if we ask Gradualizer to try a bit harder, it's even with Dialyzer on this one.
+The file is too complex for ETC to process - it crashes :(
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### known_problems/should_pass/list_tail.erl
+
+The only false positive raised by Dialyzer, which is known for _never being wrong_. Is it a Dialyzer bug?
+
+```erlang
+atom_tail() ->
+    [ 1 | list_to_atom("banana") ].
+```
+
+Dialyzer:
+
+```
+list_tail.erl:7:5: Cons will produce an improper list since its 2nd argument is atom()
+```
+
+ETC:
+
+```
+unify failed with types [integer] :=: atom
+```
+
+Gradualizer:
+
+```
+list_tail.erl:7: The expression of type atom() is not a list type
+```
+
+Apparently, all the type checkers agree. It definitely is not a Dialyzer bug. Maybe the test should be moved from `known_problems/should_pass` to `should_fail`?
