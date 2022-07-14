@@ -252,9 +252,72 @@ VegaLite.new(width: 300, height: 300)
 
 ## Some examples
 
+#### should_pass/andalso_any.erl
+
+Described at https://github.com/josefs/Gradualizer/pull/429#discussion_r920465166.
+Seems to be a soundness error in Gradualizer!
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### should_pass/binary_exhaustiveness_checking.erl
+
+Dialyzer warns about an unexported function.
+Gradualizer type checks functions no matter if they're exported or not.
+Dialyzer warning goes away after we export `l/1`.
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### should_pass/flow.erl
+
+Dialyzer sees no other local call sites than `bar(apa)`,
+therefore infers the argument type of `bar/1` to be just `apa`,
+which in turn means that the second clause of `bar/1` is redudant.
+This leads to a valid warning.
+
+Adding `-export([bar/1])` at the top makes Dialyzer accept the code.
+
+Gradualizer does not warn either with or without the extra `export` attribute.
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### should_pass/iodata.erl
+
+Dialyzer detects an improper list creation, which is not an error for Gradualizer (but maybe it should?) - this time even `--infer` to Gradualizer doesn't change the outcome.
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### should_pass/named_fun_infer_pass.erl
+
+Dialyzer infers that 0 in `F(Atoms, 0)` is not a list of integers.
+Gradualizer does not.
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### should_pass/named_fun_pass.erl
+
+Dialyzer fails due to arity mismatch.
+Gradualizer does so only with `--infer`. Dialyzer is inferring more aggressively.
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### should_pass/negate_none.erl
+
+Dialyzer returns "no local return" from `foo/0`.
+Gradualizer is silent.
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### should_pass/records.erl
+
+Dialyzer reported unexported local functions which would never be called.
+Gradualizer did not, but the Erlang compiler would, so it's not a big deal.
+
+<!-- livebook:{"break_markdown":true} -->
+
 #### should_pass/return_fun.erl
 
-One of the few cases in `should_pass` tests where Dialyzer actually detects errors, whereas Gradualizer does not.
+One of the few cases in `should_pass` tests where Dialyzer actually detects errors,
+whereas Gradualizer does not.
 
 ```erlang
 -spec return_fun_no_spec() -> integer().
@@ -277,7 +340,7 @@ ETC:
 test/should_pass/return_fun.erl: error in parse transform
 ```
 
-Gradualizer - no error!
+Gradualizer: no error!
 
 Let's remember that by default Gradualizer doesn't infer types of functions with no specs.
 
@@ -291,6 +354,60 @@ but it has type fun(() -> any())
 Dialyzer seems to infer more types by default.
 However, if we ask Gradualizer to try a bit harder, it's even with Dialyzer on this one.
 The file is too complex for ETC to process - it crashes :(
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### should_pass/scope.erl
+
+Another one of the few cases in `should_pass` tests where Dialyzer detects errors,
+but Gradualizer does not.
+
+```
+f(X) ->
+    case g(X) of
+        true -> A = 5,
+                B = 7;
+        false -> B = 6
+    end,
+    B.
+
+g(_X) ->
+    true.
+```
+
+Dialyzer:
+
+```
+scope.erl:9:9: The pattern 'false' can never match the type 'true'
+```
+
+ETC: ok
+
+Gradualizer: ok
+
+Another example showing that Dialyzer type inference is quite aggressive and quite accurate!
+It knows that `g/1` can never return anything else than `true`,
+so the latter clause of the case expression enclosing the `g(X)` call is redundant.
+In this case the entire case expression is redundant and `B` will always be 7.
+
+It's interesting to note that Gradualizer cannot detect the error even if we modify the code as follows:
+
+TODO: create a bug report about it!
+
+```
+-spec f(any()) -> atom().
+f(X) ->
+    case g(X) of
+        true -> A = 5,
+                B = 7;
+        false -> B = 6
+    end,
+    B.
+
+-spec g(any()) -> true.
+g(_X) ->
+    true.
+```
 
 <!-- livebook:{"break_markdown":true} -->
 
