@@ -1,0 +1,518 @@
+<!-- livebook:{"persist_outputs":true} -->
+
+# Dialyzer, ETC, and Gradualizer
+
+```elixir
+Mix.install([
+  {:csv, "~> 2.4"},
+  {:httpotion, "~> 3.1.0"},
+  {:kino_vega_lite, "~> 0.1.1"}
+])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+Resolving Hex dependencies...
+Dependency resolution completed:
+New:
+  csv 2.4.1
+  httpotion 3.1.3 RETIRED!
+    (deprecated) Not really maintained, please check out Tesla
+  ibrowse 4.4.0
+  kino 0.6.2
+  kino_vega_lite 0.1.2
+  parallel_stream 1.0.6
+  table 0.1.2
+  vega_lite 0.1.5
+* Getting csv (Hex package)
+* Getting httpotion (Hex package)
+* Getting kino_vega_lite (Hex package)
+* Getting kino (Hex package)
+* Getting table (Hex package)
+* Getting vega_lite (Hex package)
+* Getting ibrowse (Hex package)
+* Getting parallel_stream (Hex package)
+warning: found quoted keyword "coveralls" but the quotes are not required. Note that keywords are always atoms, even when quoted. Similar to atoms, keywords made exclusively of ASCII letters, numbers, and underscores do not require quotes
+  /home/livebook/.cache/mix/installs/elixir-1.13.2-erts-12.1.5/0c6de7f4a5cd2891c7da35ab89014321/deps/parallel_stream/mix.exs:17:30
+
+==> parallel_stream
+Compiling 11 files (.ex)
+warning: Stream.chunk/4 is deprecated. Use Stream.chunk_every/4 instead
+  lib/parallel_stream/producer.ex:16: ParallelStream.Producer.build!/4
+
+Generated parallel_stream app
+==> table
+Compiling 5 files (.ex)
+Generated table app
+==> kino
+Compiling 28 files (.ex)
+Generated kino app
+==> vega_lite
+Compiling 5 files (.ex)
+Generated vega_lite app
+==> csv
+Compiling 10 files (.ex)
+Generated csv app
+==> kino_vega_lite
+Compiling 4 files (.ex)
+Generated kino_vega_lite app
+===> Analyzing applications...
+===> Compiling ibrowse
+==> httpotion
+Compiling 1 file (.ex)
+Generated httpotion app
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+:ok
+```
+
+## Section
+
+```elixir
+tsv_url =
+  "https://gist.githubusercontent.com/erszcz/4d43a77464c87a514e71eecf2811af63/raw/bf8d18cfd236e82bba794c169b57f1f284475ddd/check.2022-07-13_170833.tsv"
+
+response = HTTPotion.get(tsv_url)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+
+08:05:19.634 [warn]  Description: 'Authenticity is not established by certificate path validation'
+     Reason: 'Option {verify, verify_peer} and cacertfile/cacerts is missing'
+
+
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+%HTTPotion.Response{
+  body: "Test type\tDialyzer\tETC\tGradualizer\tDialyzer time\tETC time\tGradualizer time\tTest file\nshould_pass\tok\tfailed\tok\t2.1023519999999998\t0.667276\t0.370988\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/alias_in_pattern.erl\nshould_pass\tfailed\tfailed\tok\t2.172917\t0.579222\t0.370547\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/andalso_any.erl\nshould_pass\tok\tfailed\tok\t2.164819\t0.645948\t0.367528\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/ann_types.erl\nshould_pass\tok\tfailed\tok\t2.1192469999999997\t0.509058\t0.38575099999999996\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/annotated_types.erl\nshould_pass\tok\tok\tok\t2.128984\t0.569714\t0.36506299999999997\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/any.erl\nshould_pass\tok\tfailed\tok\t2.1190189999999998\t0.521856\t0.356186\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/any_pattern.erl\nshould_pass\tok\tfailed\tok\t2.192218\t0.556057\t0.41377800000000003\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bc_pass.erl\nshould_pass\tfailed\tfailed\tok\t2.2091640000000003\t0.54463\t0.36658999999999997\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/binary_exhaustiveness_checking.erl\nshould_pass\tok\tfailed\tok\t2.169344\t0.5372279999999999\t0.364356\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/binary_literal_pattern.erl\nshould_pass\tok\tfailed\tok\t2.1503699999999997\t0.556012\t0.391735\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bitstring.erl\nshould_pass\tok\tfailed\tok\t2.143873\t0.542037\t0.444963\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/block_scope.erl\nshould_pass\tok\tfailed\tok\t2.147815\t0.5419919999999999\t0.38354000000000005\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bool.erl\nshould_pass\tok\tfailed\tok\t2.185212\t0.54301\t0.375585\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bounded_funs.erl\nshould_pass\tok\tok\tok\t2.215909\t0.614385\t0.355828\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/case.erl\nshould_pass\tok\tfailed\tok\t2.165235\t0.553769\t0.358696\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/case_of_record_with_user_defined.erl\nshould_pass\tok\tfailed\tok\t2.105221\t0.5544049999999999\t0.351492\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/catch_expr_pass.erl\nshould_pass\tok\tok\tok\t2.110645\t0.533869\t0.36146\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/covariant_map_keys_pass.erl\nshould_pass\tok\tok\tok\t2.216069\t0.534667\t0.376111\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/cyclic_otp_specs.erl\nshould_pass\tok\tok\tok\t2.1539200000000003\t0.5894790000000001\t0.451692\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/factorial.erl\nshould_pass\tok\tok\tok\t2.209889\t0.5189539999999999\t2.908937\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/float.erl\nshould_pass\tfailed\tok\tok\t2.213283\t0.5500259999999999\t0.371604\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/flow.erl\nshould_pass\tok\tfailed\tok\t2.1941930000000003\t0.533968\t0.36723300000000003\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/fun_capture.erl\nshould_pass\tok\tok\tok\t2.1619099999999998\t0.5612240000000001\t0.40939\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/fun_spec.erl\nshould_pass\tok\tfailed\tok\t2.213728\t0.550353\t0.364056\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/guard.erl\nshould_pass\tok\tok\tok\t2.200145\t0.57729\t0.366244\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/if_expr.erl\nshould_pass\tok\tok\tok\t2.1583180000000004\t0.5299020000000001\t0.365774\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/imported.erl\nshould_pass\tok\tok\tok\t2.5844180000000003\t0.5492250000000001\t0.364993\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/int.erl\nshould_pass\tok\tfailed\tok\t2.209573\t3.594363\t0.351982\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/intersection_pass.erl\nshould_pass\tok\tok\tok\t2.1082449999999997\t0.560314\t0.36450099999999996\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/intersection_with_any_pass.erl\nshould_pass\tfailed\tfailed\tok\t2.1120349999999997\t0.517544\t0.42670800000000003\t/Users/erszcz/work/erszcz/gradualizer/test/should_pass/iodata.erl\nshould_pass\tok\tok\tok\t2.098425\t0" <> ...,
+  headers: %HTTPotion.Headers{
+    hdrs: %{
+      "accept-ranges" => "bytes",
+      "access-control-allow-origin" => "*",
+      "cache-control" => "max-age=300",
+      "connection" => "keep-alive",
+      "content-length" => "30450",
+      "content-security-policy" => "default-src 'none'; style-src 'unsafe-inline'; sandbox",
+      "content-type" => "text/plain; charset=utf-8",
+      "date" => "Thu, 14 Jul 2022 08:05:19 GMT",
+      "etag" => "\"7103fd5e30c607d70733f99ac2c2a2d0e9118e3acd4fd9853b1c2ea87ec2da8d\"",
+      "expires" => "Thu, 14 Jul 2022 08:10:19 GMT",
+      "source-age" => "0",
+      "strict-transport-security" => "max-age=31536000",
+      "vary" => "Authorization,Accept-Encoding,Origin",
+      "via" => "1.1 varnish",
+      "x-cache" => "MISS",
+      "x-cache-hits" => "0",
+      "x-content-type-options" => "nosniff",
+      "x-fastly-request-id" => "e97b6078f4c9040f100ea20d621ca62d3e1a7c11",
+      "x-frame-options" => "deny",
+      "x-github-request-id" => "E434:6AC9:2FB79E:3362A4:62CFCE3F",
+      "x-served-by" => "cache-fra19153-FRA",
+      "x-timer" => "S1657785920.646440,VS0,VE153",
+      "x-xss-protection" => "1; mode=block"
+    }
+  },
+  status_code: 200
+}
+```
+
+```elixir
+tab = 0x09
+
+{:ok, stream} =
+  response.body
+  |> StringIO.open()
+
+tsv =
+  stream
+  |> IO.binstream(:line)
+  |> CSV.decode!(separator: tab)
+  |> Enum.into([])
+  |> Enum.drop(1)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[
+  ["should_pass", "ok", "failed", "ok", "2.1023519999999998", "0.667276", "0.370988",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/alias_in_pattern.erl"],
+  ["should_pass", "failed", "failed", "ok", "2.172917", "0.579222", "0.370547",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/andalso_any.erl"],
+  ["should_pass", "ok", "failed", "ok", "2.164819", "0.645948", "0.367528",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/ann_types.erl"],
+  ["should_pass", "ok", "failed", "ok", "2.1192469999999997", "0.509058", "0.38575099999999996",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/annotated_types.erl"],
+  ["should_pass", "ok", "ok", "ok", "2.128984", "0.569714", "0.36506299999999997",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/any.erl"],
+  ["should_pass", "ok", "failed", "ok", "2.1190189999999998", "0.521856", "0.356186",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/any_pattern.erl"],
+  ["should_pass", "ok", "failed", "ok", "2.192218", "0.556057", "0.41377800000000003",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bc_pass.erl"],
+  ["should_pass", "failed", "failed", "ok", "2.2091640000000003", "0.54463", "0.36658999999999997",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/binary_exhaustiveness_checking.erl"],
+  ["should_pass", "ok", "failed", "ok", "2.169344", "0.5372279999999999", "0.364356",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/binary_literal_pattern.erl"],
+  ["should_pass", "ok", "failed", "ok", "2.1503699999999997", "0.556012", "0.391735",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bitstring.erl"],
+  ["should_pass", "ok", "failed", "ok", "2.143873", "0.542037", "0.444963",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/block_scope.erl"],
+  ["should_pass", "ok", "failed", "ok", "2.147815", "0.5419919999999999", "0.38354000000000005",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bool.erl"],
+  ["should_pass", "ok", "failed", "ok", "2.185212", "0.54301", "0.375585",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bounded_funs.erl"],
+  ["should_pass", "ok", "ok", "ok", "2.215909", "0.614385", "0.355828",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/case.erl"],
+  ["should_pass", "ok", "failed", "ok", "2.165235", "0.553769", "0.358696",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/case_of_record_with_user_defined.erl"],
+  ["should_pass", "ok", "failed", "ok", "2.105221", "0.5544049999999999", "0.351492",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/catch_expr_pass.erl"],
+  ["should_pass", "ok", "ok", "ok", "2.110645", "0.533869", "0.36146",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/covariant_map_keys_pass.erl"],
+  ["should_pass", "ok", "ok", "ok", "2.216069", "0.534667", "0.376111",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/cyclic_otp_specs.erl"],
+  ["should_pass", "ok", "ok", "ok", "2.1539200000000003", "0.5894790000000001", "0.451692",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/factorial.erl"],
+  ["should_pass", "ok", "ok", "ok", "2.209889", "0.5189539999999999", "2.908937",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/float.erl"],
+  ["should_pass", "failed", "ok", "ok", "2.213283", "0.5500259999999999", "0.371604",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/flow.erl"],
+  ["should_pass", "ok", "failed", "ok", "2.1941930000000003", "0.533968", "0.36723300000000003",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/fun_capture.erl"],
+  ["should_pass", "ok", "ok", "ok", "2.1619099999999998", "0.5612240000000001", "0.40939",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/fun_spec.erl"],
+  ["should_pass", "ok", "failed", "ok", "2.213728", "0.550353", "0.364056",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/guard.erl"],
+  ["should_pass", "ok", "ok", "ok", "2.200145", "0.57729", "0.366244",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/if_expr.erl"],
+  ["should_pass", "ok", "ok", "ok", "2.1583180000000004", "0.5299020000000001", "0.365774",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/imported.erl"],
+  ["should_pass", "ok", "ok", "ok", "2.5844180000000003", "0.5492250000000001", "0.364993",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/int.erl"],
+  ["should_pass", "ok", "failed", "ok", "2.209573", "3.594363", "0.351982",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/intersection_pass.erl"],
+  ["should_pass", "ok", "ok", "ok", "2.1082449999999997", "0.560314", "0.36450099999999996",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/intersection_with_any_pass.erl"],
+  ["should_pass", "failed", "failed", "ok", "2.1120349999999997", "0.517544", "0.42670800000000003",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/iodata.erl"],
+  ["should_pass", "ok", "ok", "ok", "2.098425", "0.628749", "0.49684100000000003",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/issue131.erl"],
+  ["should_pass", "ok", "failed", "ok", "2.108574", "0.520277", "0.35125",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/lc.erl"],
+  ["should_pass", "ok", "failed", "ok", "2.0505720000000003", "0.5177820000000001", "0.369152",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list.erl"],
+  ["should_pass", "ok", "ok", "ok", "2.108369", "0.520336", "0.36743000000000003",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_exhaustiveness_checking_regressions.erl"],
+  ["should_pass", "ok", "ok", "ok", "2.080773", "0.616696", "0.382913",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_exhaustiveness_checking_regressions2.erl"],
+  ["should_pass", "ok", "ok", "ok", "2.064029", "0.5292899999999999", "0.376395",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_exhaustiveness_checking_unreachable_clause_regression.erl"],
+  ["should_pass", "ok", "ok", "ok", "2.204776", "0.562209", "0.362902",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_infer_pass.erl"],
+  ["should_pass", "ok", "failed", "ok", "2.2360059999999997", "0.653643", "0.418173",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/listsspecs.erl"],
+  ["should_pass", "ok", "ok", "ok", "2.216444", "0.544971", "0.37679",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map.erl"],
+  ["should_pass", "ok", "failed", "ok", "2.202191", "0.543669", "0.37242899999999995",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_as_argument_update.erl"],
+  ["should_pass", "ok", "ok", "ok", "2.207866", "0.5567179999999999", "0.37885399999999997",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_creation.erl"],
+  ["should_pass", "ok", "failed", "ok", "2.229593", "0.553717", "0.378894",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_field_valid_update.erl"],
+  ["should_pass", "ok", "ok", "ok", "2.15132", "0.613623", "0.387899", ...],
+  ["should_pass", "ok", "failed", "ok", "2.207959", "0.522229", ...],
+  ["should_pass", "ok", "failed", "ok", "2.214956", ...],
+  ["should_pass", "ok", "failed", "ok", ...],
+  ["should_pass", "ok", "failed", ...],
+  ["should_pass", "ok", ...],
+  ["should_pass", ...],
+  [...],
+  ...
+]
+```
+
+```elixir
+headers = [
+  :type,
+  :dialyzer,
+  :etc,
+  :gradualizer,
+  :dialyzer_seconds,
+  :etc_seconds,
+  :gradualizer_seconds,
+  :file
+]
+
+# series by header
+by_header =
+  tsv
+  |> Enum.zip()
+  |> Enum.map(&Tuple.to_list/1)
+
+by_header = Enum.zip(headers, by_header) |> Enum.into(%{})
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+%{
+  dialyzer: ["ok", "failed", "ok", "ok", "ok", "ok", "ok", "failed", "ok", "ok", "ok", "ok", "ok",
+   "ok", "ok", "ok", "ok", "ok", "ok", "ok", "failed", "ok", "ok", "ok", "ok", "ok", "ok", "ok",
+   "ok", "failed", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok",
+   "ok", "ok", "ok", "ok", "ok", "ok", ...],
+  dialyzer_seconds: ["2.1023519999999998", "2.172917", "2.164819", "2.1192469999999997", "2.128984",
+   "2.1190189999999998", "2.192218", "2.2091640000000003", "2.169344", "2.1503699999999997",
+   "2.143873", "2.147815", "2.185212", "2.215909", "2.165235", "2.105221", "2.110645", "2.216069",
+   "2.1539200000000003", "2.209889", "2.213283", "2.1941930000000003", "2.1619099999999998",
+   "2.213728", "2.200145", "2.1583180000000004", "2.5844180000000003", "2.209573",
+   "2.1082449999999997", "2.1120349999999997", "2.098425", "2.108574", "2.0505720000000003",
+   "2.108369", "2.080773", "2.064029", "2.204776", "2.2360059999999997", "2.216444", "2.202191",
+   "2.207866", "2.229593", "2.15132", "2.207959", "2.214956", "2.226715", "2.139829", "2.248103",
+   ...],
+  etc: ["failed", "failed", "failed", "failed", "ok", "failed", "failed", "failed", "failed",
+   "failed", "failed", "failed", "failed", "ok", "failed", "failed", "ok", "ok", "ok", "ok", "ok",
+   "failed", "ok", "failed", "ok", "ok", "ok", "failed", "ok", "failed", "ok", "failed", "failed",
+   "ok", "ok", "ok", "ok", "failed", "ok", "failed", "ok", "failed", "ok", "failed", "failed",
+   "failed", "failed", ...],
+  etc_seconds: ["0.667276", "0.579222", "0.645948", "0.509058", "0.569714", "0.521856", "0.556057",
+   "0.54463", "0.5372279999999999", "0.556012", "0.542037", "0.5419919999999999", "0.54301",
+   "0.614385", "0.553769", "0.5544049999999999", "0.533869", "0.534667", "0.5894790000000001",
+   "0.5189539999999999", "0.5500259999999999", "0.533968", "0.5612240000000001", "0.550353",
+   "0.57729", "0.5299020000000001", "0.5492250000000001", "3.594363", "0.560314", "0.517544",
+   "0.628749", "0.520277", "0.5177820000000001", "0.520336", "0.616696", "0.5292899999999999",
+   "0.562209", "0.653643", "0.544971", "0.543669", "0.5567179999999999", "0.553717", "0.613623",
+   "0.522229", "0.5525639999999999", "0.522299", ...],
+  file: ["/Users/erszcz/work/erszcz/gradualizer/test/should_pass/alias_in_pattern.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/andalso_any.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/ann_types.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/annotated_types.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/any.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/any_pattern.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bc_pass.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/binary_exhaustiveness_checking.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/binary_literal_pattern.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bitstring.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/block_scope.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bool.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bounded_funs.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/case.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/case_of_record_with_user_defined.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/catch_expr_pass.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/covariant_map_keys_pass.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/cyclic_otp_specs.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/factorial.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/float.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/flow.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/fun_capture.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/fun_spec.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/guard.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/if_expr.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/imported.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/int.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/intersection_pass.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/intersection_with_any_pass.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/iodata.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/issue131.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/lc.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_exhaustiveness_checking_regressions.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_exhaustiveness_checking_regressions2.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_exhaustiveness_checking_unreachable_clause_regression.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_infer_pass.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/listsspecs.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_as_argument_update.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_creation.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_field_valid_update.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_passing_expr.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_passing_subtyping.erl",
+   "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_pattern.erl", ...],
+  gradualizer: ["ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok",
+   "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok",
+   "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", ...],
+  gradualizer_seconds: ["0.370988", "0.370547", "0.367528", "0.38575099999999996",
+   "0.36506299999999997", "0.356186", "0.41377800000000003", "0.36658999999999997", "0.364356",
+   "0.391735", "0.444963", "0.38354000000000005", "0.375585", "0.355828", "0.358696", "0.351492",
+   "0.36146", "0.376111", "0.451692", "2.908937", "0.371604", "0.36723300000000003", "0.40939",
+   "0.364056", "0.366244", "0.365774", "0.364993", "0.351982", "0.36450099999999996",
+   "0.42670800000000003", "0.49684100000000003", "0.35125", "0.369152", "0.36743000000000003",
+   "0.382913", "0.376395", "0.362902", "0.418173", "0.37679", "0.37242899999999995",
+   "0.37885399999999997", "0.378894", "0.387899", ...],
+  type: ["should_pass", "should_pass", "should_pass", "should_pass", "should_pass", "should_pass",
+   "should_pass", "should_pass", "should_pass", "should_pass", "should_pass", "should_pass",
+   "should_pass", "should_pass", "should_pass", "should_pass", "should_pass", "should_pass",
+   "should_pass", "should_pass", "should_pass", "should_pass", "should_pass", "should_pass",
+   "should_pass", "should_pass", "should_pass", "should_pass", "should_pass", "should_pass",
+   "should_pass", "should_pass", "should_pass", "should_pass", "should_pass", "should_pass",
+   "should_pass", "should_pass", "should_pass", "should_pass", "should_pass", "should_pass", ...]
+}
+```
+
+```elixir
+by_test_type = tsv |> Enum.group_by(&List.first/1)
+
+tool_to_index = %{
+  dialyzer: 1,
+  etc: 2,
+  gradualizer: 3
+}
+
+extract_tool = fn row, tool ->
+  case Enum.at(row, tool_to_index[tool]) do
+    "ok" -> [tool |> to_string()]
+    _ -> []
+  end
+end
+
+map_test_type_series_to_tools = fn series ->
+  series
+  |> Enum.flat_map(fn row ->
+    [
+      ["all tests"],
+      extract_tool.(row, :dialyzer),
+      extract_tool.(row, :etc),
+      extract_tool.(row, :gradualizer)
+    ]
+    |> Enum.concat()
+  end)
+end
+
+by_test_type = %{
+  "known_problems_should_fail" =>
+    map_test_type_series_to_tools.(by_test_type["known_problems_should_fail"]),
+  "known_problems_should_pass" =>
+    map_test_type_series_to_tools.(by_test_type["known_problems_should_pass"]),
+  "should_fail" => map_test_type_series_to_tools.(by_test_type["should_fail"]),
+  "should_pass" => map_test_type_series_to_tools.(by_test_type["should_pass"])
+}
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+%{
+  "known_problems_should_fail" => ["all tests", "gradualizer", "all tests", "dialyzer", "etc",
+   "gradualizer", "all tests", "dialyzer", "etc", "gradualizer", "all tests", "dialyzer", "etc",
+   "gradualizer", "all tests", "dialyzer", "etc", "gradualizer", "all tests", "dialyzer",
+   "gradualizer", "all tests", "gradualizer", "all tests", "gradualizer", "all tests", "dialyzer",
+   "etc", "gradualizer", "all tests", "dialyzer", "gradualizer", "all tests", "dialyzer",
+   "gradualizer"],
+  "known_problems_should_pass" => ["all tests", "dialyzer", "etc", "all tests", "dialyzer",
+   "all tests", "dialyzer", "all tests", "dialyzer", "etc", "all tests", "dialyzer", "all tests",
+   "dialyzer", "etc", "all tests", "dialyzer", "etc", "all tests", "all tests", "dialyzer", "etc",
+   "all tests", "dialyzer", "all tests", "dialyzer", "all tests", "dialyzer", "etc", "all tests",
+   "dialyzer", "etc", "all tests", "dialyzer", "all tests", "dialyzer", "etc", "all tests",
+   "dialyzer", "etc"],
+  "should_fail" => ["all tests", "dialyzer", "all tests", "all tests", "all tests", "all tests",
+   "all tests", "all tests", "all tests", "dialyzer", "all tests", "dialyzer", "all tests",
+   "all tests", "dialyzer", "all tests", "dialyzer", "all tests", "dialyzer", "all tests",
+   "all tests", "dialyzer", "etc", "all tests", "dialyzer", "etc", "all tests", "etc", "all tests",
+   "dialyzer", "all tests", "dialyzer", "all tests", "dialyzer", "all tests", "dialyzer", "etc",
+   "all tests", "dialyzer", "all tests", "dialyzer", "all tests", "dialyzer", "etc", "all tests",
+   "dialyzer", "all tests", ...],
+  "should_pass" => ["all tests", "dialyzer", "gradualizer", "all tests", "gradualizer", "all tests",
+   "dialyzer", "gradualizer", "all tests", "dialyzer", "gradualizer", "all tests", "dialyzer",
+   "etc", "gradualizer", "all tests", "dialyzer", "gradualizer", "all tests", "dialyzer",
+   "gradualizer", "all tests", "gradualizer", "all tests", "dialyzer", "gradualizer", "all tests",
+   "dialyzer", "gradualizer", "all tests", "dialyzer", "gradualizer", "all tests", "dialyzer",
+   "gradualizer", "all tests", "dialyzer", "gradualizer", "all tests", "dialyzer", "etc",
+   "gradualizer", "all tests", "dialyzer", "gradualizer", "all tests", ...]
+}
+```
+
+```elixir
+# Sanity check!
+[103, 16, 86, 11] = [
+  by_test_type["should_pass"] |> Enum.filter(fn e -> e == "all tests" end) |> length,
+  by_test_type["known_problems_should_pass"]
+  |> Enum.filter(fn e -> e == "all tests" end)
+  |> length,
+  by_test_type["should_fail"] |> Enum.filter(fn e -> e == "all tests" end) |> length,
+  by_test_type["known_problems_should_fail"]
+  |> Enum.filter(fn e -> e == "all tests" end)
+  |> length
+]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[103, 16, 86, 11]
+```
+
+<!-- livebook:{"attrs":{"chart_title":null,"height":null,"layers":[{"chart_type":"bar","color_field":"should_pass","color_field_aggregate":null,"color_field_type":null,"data_variable":"by_test_type","x_field":"should_pass","x_field_aggregate":null,"x_field_type":null,"y_field":"__count__","y_field_aggregate":null,"y_field_type":null}],"vl_alias":"Elixir.VegaLite","width":null},"kind":"Elixir.KinoVegaLite.ChartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+VegaLite.new()
+|> VegaLite.data_from_values(by_test_type, only: ["should_pass"])
+|> VegaLite.mark(:bar)
+|> VegaLite.encode_field(:x, "should_pass")
+|> VegaLite.encode(:y, aggregate: :count)
+|> VegaLite.encode_field(:color, "should_pass")
+```
+
+<!-- livebook:{"output":true} -->
+
+```vega-lite
+{"$schema":"https://vega.github.io/schema/vega-lite/v5.json","data":{"values":[{"should_pass":"all tests"},{"should_pass":"dialyzer"},{"should_pass":"gradualizer"},{"should_pass":"all tests"},{"should_pass":"gradualizer"},{"should_pass":"all tests"},{"should_pass":"dialyzer"},{"should_pass":"gradualizer"},{"should_pass":"all tests"},{"should_pass":"dialyzer"},{"should_pass":"gradualizer"},{"should_pass":"all tests"},{"should_pass":"dialyzer"},{"should_pass":"etc"},{"should_pass":"gradualizer"},{"should_pass":"all tests"},{"should_pass":"dialyzer"},{"should_pass":"gradualizer"},{"should_pass":"all tests"},{"should_pass":"dialyzer"},{"should_pass":"gradualizer"},{"should_pass":"all tests"},{"should_pass":"gradualizer"},{"should_pass":"all tests"},{"should_pass":"dialyzer"},{"should_pass":"gradualizer"},{"should_pass":"all tests"},{"should_pass":"dialyzer"},{"should_pass":"gradualizer"},{"should_pass":"all tests"},{"should_pass":"dialyzer"},{"should_pass":"gradualizer"},{"should_pass":"all tests"},{"should_pass":"dialyzer"},{"should_pass":"gradualizer"}]},"encoding":{"color":{"field":"should_pass"},"x":{"field":"should_pass"},"y":{"aggregate":"count"}},"mark":"bar"}
+```
+
+<!-- livebook:{"attrs":{"chart_title":null,"height":null,"layers":[{"chart_type":"bar","color_field":"known_problems_should_pass","color_field_aggregate":null,"color_field_type":null,"data_variable":"by_test_type","x_field":"known_problems_should_pass","x_field_aggregate":null,"x_field_type":null,"y_field":"__count__","y_field_aggregate":null,"y_field_type":null}],"vl_alias":"Elixir.VegaLite","width":null},"kind":"Elixir.KinoVegaLite.ChartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+VegaLite.new()
+|> VegaLite.data_from_values(by_test_type, only: ["known_problems_should_pass"])
+|> VegaLite.mark(:bar)
+|> VegaLite.encode_field(:x, "known_problems_should_pass")
+|> VegaLite.encode(:y, aggregate: :count)
+|> VegaLite.encode_field(:color, "known_problems_should_pass")
+```
+
+<!-- livebook:{"output":true} -->
+
+```vega-lite
+{"$schema":"https://vega.github.io/schema/vega-lite/v5.json","data":{"values":[{"known_problems_should_pass":"all tests"},{"known_problems_should_pass":"dialyzer"},{"known_problems_should_pass":"etc"},{"known_problems_should_pass":"all tests"},{"known_problems_should_pass":"dialyzer"},{"known_problems_should_pass":"all tests"},{"known_problems_should_pass":"dialyzer"},{"known_problems_should_pass":"all tests"},{"known_problems_should_pass":"dialyzer"},{"known_problems_should_pass":"etc"},{"known_problems_should_pass":"all tests"},{"known_problems_should_pass":"dialyzer"},{"known_problems_should_pass":"all tests"},{"known_problems_should_pass":"dialyzer"},{"known_problems_should_pass":"etc"},{"known_problems_should_pass":"all tests"},{"known_problems_should_pass":"dialyzer"},{"known_problems_should_pass":"etc"},{"known_problems_should_pass":"all tests"},{"known_problems_should_pass":"all tests"},{"known_problems_should_pass":"dialyzer"},{"known_problems_should_pass":"etc"},{"known_problems_should_pass":"all tests"},{"known_problems_should_pass":"dialyzer"},{"known_problems_should_pass":"all tests"},{"known_problems_should_pass":"dialyzer"},{"known_problems_should_pass":"all tests"},{"known_problems_should_pass":"dialyzer"},{"known_problems_should_pass":"etc"},{"known_problems_should_pass":"all tests"},{"known_problems_should_pass":"dialyzer"},{"known_problems_should_pass":"etc"},{"known_problems_should_pass":"all tests"},{"known_problems_should_pass":"dialyzer"},{"known_problems_should_pass":"all tests"}]},"encoding":{"color":{"field":"known_problems_should_pass"},"x":{"field":"known_problems_should_pass"},"y":{"aggregate":"count"}},"mark":"bar"}
+```
+
+<!-- livebook:{"attrs":{"chart_title":null,"height":null,"layers":[{"chart_type":"bar","color_field":"should_fail","color_field_aggregate":null,"color_field_type":null,"data_variable":"by_test_type","x_field":"should_fail","x_field_aggregate":null,"x_field_type":null,"y_field":"__count__","y_field_aggregate":null,"y_field_type":null}],"vl_alias":"Elixir.VegaLite","width":null},"kind":"Elixir.KinoVegaLite.ChartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+VegaLite.new()
+|> VegaLite.data_from_values(by_test_type, only: ["should_fail"])
+|> VegaLite.mark(:bar)
+|> VegaLite.encode_field(:x, "should_fail")
+|> VegaLite.encode(:y, aggregate: :count)
+|> VegaLite.encode_field(:color, "should_fail")
+```
+
+<!-- livebook:{"output":true} -->
+
+```vega-lite
+{"$schema":"https://vega.github.io/schema/vega-lite/v5.json","data":{"values":[{"should_fail":"all tests"},{"should_fail":"dialyzer"},{"should_fail":"all tests"},{"should_fail":"all tests"},{"should_fail":"all tests"},{"should_fail":"all tests"},{"should_fail":"all tests"},{"should_fail":"all tests"},{"should_fail":"all tests"},{"should_fail":"dialyzer"},{"should_fail":"all tests"},{"should_fail":"dialyzer"},{"should_fail":"all tests"},{"should_fail":"all tests"},{"should_fail":"dialyzer"},{"should_fail":"all tests"},{"should_fail":"dialyzer"},{"should_fail":"all tests"},{"should_fail":"dialyzer"},{"should_fail":"all tests"},{"should_fail":"all tests"},{"should_fail":"dialyzer"},{"should_fail":"etc"},{"should_fail":"all tests"},{"should_fail":"dialyzer"},{"should_fail":"etc"},{"should_fail":"all tests"},{"should_fail":"etc"},{"should_fail":"all tests"},{"should_fail":"dialyzer"},{"should_fail":"all tests"},{"should_fail":"dialyzer"},{"should_fail":"all tests"},{"should_fail":"dialyzer"},{"should_fail":"all tests"}]},"encoding":{"color":{"field":"should_fail"},"x":{"field":"should_fail"},"y":{"aggregate":"count"}},"mark":"bar"}
+```
+
+<!-- livebook:{"attrs":{"chart_title":null,"height":null,"layers":[{"chart_type":"bar","color_field":"known_problems_should_fail","color_field_aggregate":null,"color_field_type":null,"data_variable":"by_test_type","x_field":"known_problems_should_fail","x_field_aggregate":null,"x_field_type":null,"y_field":"__count__","y_field_aggregate":null,"y_field_type":null}],"vl_alias":"Elixir.VegaLite","width":null},"kind":"Elixir.KinoVegaLite.ChartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+VegaLite.new()
+|> VegaLite.data_from_values(by_test_type, only: ["known_problems_should_fail"])
+|> VegaLite.mark(:bar)
+|> VegaLite.encode_field(:x, "known_problems_should_fail")
+|> VegaLite.encode(:y, aggregate: :count)
+|> VegaLite.encode_field(:color, "known_problems_should_fail")
+```
+
+<!-- livebook:{"output":true} -->
+
+```vega-lite
+{"$schema":"https://vega.github.io/schema/vega-lite/v5.json","data":{"values":[{"known_problems_should_fail":"all tests"},{"known_problems_should_fail":"gradualizer"},{"known_problems_should_fail":"all tests"},{"known_problems_should_fail":"dialyzer"},{"known_problems_should_fail":"etc"},{"known_problems_should_fail":"gradualizer"},{"known_problems_should_fail":"all tests"},{"known_problems_should_fail":"dialyzer"},{"known_problems_should_fail":"etc"},{"known_problems_should_fail":"gradualizer"},{"known_problems_should_fail":"all tests"},{"known_problems_should_fail":"dialyzer"},{"known_problems_should_fail":"etc"},{"known_problems_should_fail":"gradualizer"},{"known_problems_should_fail":"all tests"},{"known_problems_should_fail":"dialyzer"},{"known_problems_should_fail":"etc"},{"known_problems_should_fail":"gradualizer"},{"known_problems_should_fail":"all tests"},{"known_problems_should_fail":"dialyzer"},{"known_problems_should_fail":"gradualizer"},{"known_problems_should_fail":"all tests"},{"known_problems_should_fail":"gradualizer"},{"known_problems_should_fail":"all tests"},{"known_problems_should_fail":"gradualizer"},{"known_problems_should_fail":"all tests"},{"known_problems_should_fail":"dialyzer"},{"known_problems_should_fail":"etc"},{"known_problems_should_fail":"gradualizer"},{"known_problems_should_fail":"all tests"},{"known_problems_should_fail":"dialyzer"},{"known_problems_should_fail":"gradualizer"},{"known_problems_should_fail":"all tests"},{"known_problems_should_fail":"dialyzer"},{"known_problems_should_fail":"gradualizer"}]},"encoding":{"color":{"field":"known_problems_should_fail"},"x":{"field":"known_problems_should_fail"},"y":{"aggregate":"count"}},"mark":"bar"}
+```
