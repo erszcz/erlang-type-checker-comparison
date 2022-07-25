@@ -265,6 +265,8 @@ Dialyzer warns about an unexported function.
 Gradualizer type checks functions no matter if they're exported or not.
 Dialyzer warning goes away after we export `l/1`.
 
+Fixed for Dialyzer with https://github.com/josefs/Gradualizer/pull/430.
+
 <!-- livebook:{"break_markdown":true} -->
 
 #### should_pass/flow.erl
@@ -278,11 +280,13 @@ Adding `-export([bar/1])` at the top makes Dialyzer accept the code.
 
 Gradualizer does not warn either with or without the extra `export` attribute.
 
+Fixed for Dialyzer with https://github.com/josefs/Gradualizer/pull/431.
+
 <!-- livebook:{"break_markdown":true} -->
 
 #### should_pass/iodata.erl
 
-Dialyzer detects an improper list creation, which is not an error for Gradualizer (but maybe it should?) - this time even `--infer` to Gradualizer doesn't change the outcome.
+Dialyzer detects an improper list creation, which is not an error for Gradualizer (but maybe it should?) - passing `--infer` to Gradualizer doesn't change the outcome.
 
 <!-- livebook:{"break_markdown":true} -->
 
@@ -439,3 +443,296 @@ list_tail.erl:7: The expression of type atom() is not a list type
 ```
 
 Apparently, all the type checkers agree. It definitely is not a Dialyzer bug. Maybe the test should be moved from `known_problems/should_pass` to `should_fail`?
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### known_problems/should_pass/arith_op_arg_types.erl
+
+Gradualizer is wrong about integer type inference in presence of arithmetic operations. Dialyzer is fine with it.
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### known_problems/should_pass/binary_exhaustiveness_checking_should_pass.erl
+
+Gradualizer cannot tell that `<<_:24>>` is a subtype of `<<_:_*8>>`.
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### should_fail/annotated_types_fail.erl
+
+Gradualizer provides type annotation/assertion macros which can be used to provide extra type information by the programmer. Gradualizer correctly finds types discrepancies between specs and annotations.
+
+Dialyzer does not understand the annotation macros and does not have enough info to find type errors. Dialyzer is more permissive.
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### should_fail/branch.erl
+
+Given the code:
+
+```
+-spec c(boolean()) -> integer().
+c(X) ->
+    X.
+```
+
+Dialyzer (with no extra flags) does not detect type mismatch. With `-Wspecdiffs` or `-Woverspecs` it reports:
+
+```
+branch.erl:5:2: Type specification branch:c
+          (boolean()) -> integer() is a subtype of the success typing: branch:c
+          (_) -> any()
+```
+
+The report is correct. Arguably, though, it's a bit hard to understand.
+
+Gradualizer reports:
+
+```
+The variable is expected to have type integer() but it has type false | true
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### should_fail/branch2.erl
+
+Given the code:
+
+```
+-spec c(boolean()) -> integer().
+c(true) ->
+    1;
+c(false) ->
+    apa.
+```
+
+Dialyzer (with no options) does not detect type mismatch. With `-Wspecdiffs` it reports:
+
+```
+branch2.erl:5:2: The success typing for branch2:c/1 implies that the function might also return
+          'apa' but the specification return is
+          integer()
+```
+
+Which is expected.
+
+Gradualizer by default reports:
+
+```
+The atom is expected to have type integer() but it has type apa:
+
+    1;
+c(false) ->
+    apa.
+    ^^^
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### should_fail/case_pattern.erl
+
+Given the code:
+
+```
+-spec f(integer(), atom()) -> ok.
+f(X, Y) ->
+    case Y of
+        X -> ok
+    end.
+```
+
+Dialyzer (with no options) cannot figure out that the pattern (matching integers) will never match an atom. With `-Wspecdiffs` a misleading warning is printed:
+
+```
+case_pattern.erl:4:2: Type specification case_pattern:f
+          (integer(), atom()) -> 'ok' is a subtype of the success typing: case_pattern:f
+          (_, _) -> 'ok'
+```
+
+The warning suggests that our spec is too specific, whereas in practice its explicitness enables the type checker to figure out that the case expression will never match.
+
+Gradualizer reports:
+
+```
+The variable is expected to have type atom() but it has type integer():
+
+f(X, Y) ->
+    case Y of
+        X -> ok
+        ^
+```
+
+At runtime, the code fails with:
+
+```
+2> case_pattern:f(3, a).
+** exception error: no case clause matching a
+     in function  case_pattern:f/2 (test/should_fail/case_pattern.erl, line 6)
+```
+
+So Gradualizer detects an actual bug that Dialyzer does not.
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### should_fail/case_pattern2.erl
+
+Given the code:
+
+```
+-spec f(integer(), atom()) -> ok.
+f(X, Y) ->
+    case {X, Y} of
+        {Z, Z} -> ok
+    end.
+```
+
+Dialyzer (with no options) cannot figure out that the pattern will never match the expression as X and Y are of different types. With `-Wspecdiffs` it suggests the spec is too strict:
+
+```
+case_pattern2.erl:4:2: Type specification case_pattern2:f
+          (integer(), atom()) -> 'ok' is a subtype of the success typing: case_pattern2:f
+          (_, _) -> 'ok'
+```
+
+Gradualizer reports that:
+
+```
+The variable is expected to have type atom() but it has type integer():
+
+f(X, Y) ->
+    case {X, Y} of
+        {Z, Z} -> ok
+            ^
+```
+
+So Gradualizer prevents the runtime error:
+
+```
+2> case_pattern2:f(3, a).
+** exception error: no case clause matching {3,a}
+     in function  case_pattern2:f/2 (test/should_fail/case_pattern2.erl, line 6)
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### should_fail/covariant_map_keys_fail.erl
+
+Given the code:
+
+```
+-spec good(#{ good := A }) -> A.
+good(#{ good := X }) -> X.
+
+-spec not_good(#{good | bad := A}) -> A.
+not_good(M) -> good(M). %% This call should fail
+
+-spec kaboom() -> integer().
+kaboom() -> not_good(#{ bad => 0 }).
+```
+
+Dialyzer (with no options) does not detect any errors. With `-Wspecdiffs` it reports:
+
+```
+covariant_map_keys_fail.erl:6:2: Type specification covariant_map_keys_fail:good
+          (#{'good' := A}) -> A is a subtype of the success typing: covariant_map_keys_fail:good
+          (#{'good' := _, _ => _}) -> any()
+covariant_map_keys_fail.erl:9:2: Type specification covariant_map_keys_fail:not_good
+          (#{'good' | 'bad' := A}) -> A is a supertype of the success typing: covariant_map_keys_fail:not_good
+          (#{'good' := _}) -> any()
+covariant_map_keys_fail.erl:12:2: The specification for covariant_map_keys_fail:kaboom/0 states that the function might also return
+          integer() but the inferred return is
+          none()
+```
+
+Dialyzer suggests the information we pass in `good/1` spec is redundant. It hints at an error in `not_good/1`, but is not explicit about it. It correctly detects an error in `kaboom/0`.
+
+Gradualizer reports:
+
+```
+The variable is expected to have type #{good := A} but it has type #{bad | good := A}
+
+-spec not_good(#{good | bad := A}) -> A.
+not_good(M) -> good(M).
+                    ^
+```
+
+Gradualizer does not detect the error in `kaboom/0`, but it does detect the more local error in `not_good/1`. If we fix the error in `not_good/1`, the error in `kaboom/0` will automatically be fixed, too.
+
+However, Gradualizer, even with the `--infer` flag, does not infer the type of `#{ bad => 0 }` expression passed into `not_good/1` as an argument. This is now tracked as https://github.com/josefs/Gradualizer/issues/432.
+
+Interestingly, if we modify the code to:
+
+```
+-spec kaboom() -> integer().
+kaboom() ->
+    M = #{ bad => 0 },
+    not_good(M).
+```
+
+Gradualizer is able to report also this error:
+
+```
+The variable is expected to have type #{good | bad := A} but it has type #{bad => 0}
+
+kaboom() ->
+    M = #{ bad => 0 },
+    not_good(M).
+             ^
+```
+
+The runtime error Gradualizer protects from is:
+
+```
+2> covariant_map_keys_fail:not_good(#{bad => 0}).
+** exception error: no function clause matching covariant_map_keys_fail:good(#{bad => 0}) (test/should_fail/covariant_map_keys_fail.erl, line 7)
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### should_fail/cyclic_type_vars.erl
+
+Given the code:
+
+```
+-spec foo(A) -> B when
+    A :: true | B,
+    B :: [A].
+```
+
+Gradualizer reports a cyclic dependency between type variables A and B. Dialyzer does not.
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### should_fail/exhaustive.erl
+
+Dialyzer (with no options) does not fail type checking the file. With `-Wspecdiffs` it hints at spec and implementation mismatches, but with not clear indications which are wrong.
+
+Gradualizer assumes the specs to be right and therefore returns explicit exhaustiveness failures:
+
+```
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/exhaustive.erl:48:1: Nonexhaustive patterns: 0
+```
+
+It becomes even more apparent when we add an example of a nonexhaustive `case` expression inside a function body:
+
+```
+-spec integer_2(integer()) -> {}.
+integer_2(I) ->
+    case I of
+        0 -> {}
+    end.
+```
+
+Gradualizer reports the exact line:
+
+```
+should_fail/exhaustive.erl:53:9: Nonexhaustive patterns: -1
+```
+
+Whereas Dialyzer (with `-Wspecdiffs`) only reports a hint that our passed in type is wider than the implementation expects:
+
+```
+exhaustive.erl:50:2: Type specification exhaustive:integer_2
+          (integer()) -> {} is a supertype of the success typing: exhaustive:integer_2
+          (0) -> {}
+```
