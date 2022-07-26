@@ -736,3 +736,279 @@ exhaustive.erl:50:2: Type specification exhaustive:integer_2
           (integer()) -> {} is a supertype of the success typing: exhaustive:integer_2
           (0) -> {}
 ```
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### should_fail/exhaustive_float.erl
+
+Given the code:
+
+```
+-type t() :: {int, integer()}
+           | {float, float()}.
+
+-spec ef(t()) -> ok.
+ef(T) ->
+    case T of
+        {int, _} -> ok
+    end.
+```
+
+Dialyzer (with no options) does not report any errors. With `-Wspecdiffs` it reports the following hint, which suggests that we might be missing some clauses:
+
+```
+exhaustive_float.erl:8:2: Type specification exhaustive_float:ef
+          (t()) -> 'ok' is not equal to the success typing: exhaustive_float:ef
+          ({'int', _}) -> 'ok'
+```
+
+Gradualizer reports a definite error:
+
+```
+should_fail/exhaustive_float.erl:11:9: Nonexhaustive patterns: {float, -1.0}
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### should_fail/exhaustive_list_variants.erl
+
+Given the code:
+
+```
+-type list_variant_t() :: {non_list, integer()}
+                        | {list, [integer()]}.
+
+-spec list_variant_omitted(list_variant_t()) -> ok.
+list_variant_omitted(T) ->
+    case T of
+        {non_list, _} -> ok
+    end.
+```
+
+Dialyzer (with no options) does not report any errors. With `-Wspecdiffs` it reports the following hint, which suggests that we might be missing some clauses:
+
+```
+exhaustive_list_variants.erl:8:2: Type specification exhaustive_list_variants:list_variant_omitted
+          (list_variant_t()) -> 'ok' is not equal to the success typing: exhaustive_list_variants:list_variant_omitted
+          ({'non_list', _}) -> 'ok'
+```
+
+Gradualizer reports a definite error:
+
+```
+should_fail/exhaustive_list_variants.erl:11:9: Nonexhaustive patterns: {list, []}
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### known_problems/should_fail/arith_op.erl
+
+Given the code:
+
+```
+-spec int_error(any(), float()) -> integer().
+int_error(X, Y) ->
+    A = X div Y,
+    A.
+```
+
+Dialyzer reports a concrete error:
+
+```
+Invalid type specification for function arith_op:int_error/2. The success typing is
+          (integer(), integer()) -> integer()
+```
+
+Gradualizer does not report anything.
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### known_problems/should_fail/exhaustive_argumentwise.erl
+
+Given the code:
+
+```
+-type t() :: ala | ola.
+
+-spec f(t(), any()) -> ok.
+f(ala, _) -> ok.
+```
+
+By default none of the typecheckers can tell that `f/2` is a partial function.
+
+Dialyzer with `-Wspecdiffs` reports a warning that the success typing is narrower then the spec:
+
+```
+exhaustive_argumentwise.erl:7:2: Type specification exhaustive_argumentwise:f
+          (t(), any()) -> 'ok' is a supertype of the success typing: exhaustive_argumentwise:f
+          ('ala', _) -> 'ok'
+```
+
+## Examples from "Bidirectional Typing for Erlang" by Nithin Rajendrakumar and Annette Bieniusa
+
+#### 1. Polymorphic list lookup
+
+```
+-spec lookup(T1, [{T1, T2}]) -> (none | T2).
+lookup(_, []) -> none;
+lookup(K, [{K, V}|_]) -> V;
+lookup(K, [_|KVs])-> lookup(K, KVs).
+
+find() ->
+    "s" = lookup(0, [{0, 1}]).
+```
+
+By default, Dialyzer and Gradualizer do not report any errors. Dialyzer with `-Wspecdiffs` reports a misleading warning:
+
+```
+bdtfe1.erl:9:2: Type specification bdtfe1:lookup
+          (T1, [{T1, T2}]) -> 'none' | T2 is a subtype of the success typing: bdtfe1:lookup
+          (_, maybe_improper_list()) -> any()
+```
+
+The warning suggests that the spec is narrower than the actual implementation can handle. In practice, though, Dialyzer ignores the extra information we provide in the spec, which is crucial to identifying the bug in `find/0`.
+
+ETC reports a unification error:
+
+```
+union-unify failed with types [char] :=: (atom|?`A)
+```
+
+ETC reports that a list of characters cannot be unified with a union of atom (`none`) and a type variable.
+
+Gradualizer still lacks a constraint solver, so it cannot find the polymorphic type error.
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### 2. Partial function 1/2
+
+```
+-spec foo(integer()) -> {}.
+foo(1) -> true;
+foo(42) -> {}.
+
+-spec foo2(integer()) -> {}.
+foo2(1) -> {};
+foo2(42) -> {}.
+```
+
+In the code above the original example from the paper is copied twice, the latter copy having one type error fixed (the mismatch between `true` and `{}`) - this is to verify if our type checkers can find none, one, or both of the errors.
+
+Dialyzer (with no options) reports nothing. With `-Wspecdiffs` it reports:
+
+```
+bdtfe3_should_fail.erl:8:2: The success typing for bdtfe3_should_fail:foo/1 implies that the function might also return
+          'true' but the specification return is
+          {}
+bdtfe3_should_fail.erl:12:2: Type specification bdtfe3_should_fail:foo2
+          (integer()) -> {} is a supertype of the success typing: bdtfe3_should_fail:foo2
+          (1 | 42) -> {}
+```
+
+So Dialyzer can detect both the return type mismatch against the spec and that the function is partial.
+
+ETC reports a unification failure of boolean and tuple:
+
+```
+unify failed with types boolean :=: tuple
+```
+
+Interestingly, if we comment out the first definition, ETC still fails on the second one with a unification failure of `tuple` and `{}`:
+
+```
+unify failed with types {} :=: tuple
+```
+
+Gradualizer with no extra options reports both a type mismatch and that the function is partial:
+
+```
+/Users/erszcz/work/vrnithinkumar/ETC/bdtfe3_should_fail.erl: The atom on line 9 at column 11 is expected to have type {} but it has type true
+
+-spec foo(integer()) -> {}.
+foo(1) -> true;
+          ^^^^
+
+/Users/erszcz/work/vrnithinkumar/ETC/bdtfe3_should_fail.erl: Nonexhaustive patterns on line 13 at column 1
+Example values which are not covered:
+	0
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### Partial function 2/2
+
+It's also interesting to consider the behaviour of the type checkers when we apply some changes:
+
+```
+-spec foo3(integer()) -> {}.
+foo3(1) -> {};
+foo3(42) -> {};
+foo3(_) -> erlang:error(intentionally_partial).
+```
+
+The style above is somewhat more defensive than just "letting it crash". However, its explicitness makes it easier to understand that the function is partial on purpose, not by omission.
+
+Dialyzer (with no options) reports nothing. With `-Wspecdiffs` it still reports that the spec is wider than the success typing:
+
+```
+bdtfe3_should_pass.erl:8:2: Type specification bdtfe3_should_pass:foo3
+          (integer()) -> {} is a supertype of the success typing: bdtfe3_should_pass:foo3
+          (1 | 42) -> {}
+```
+
+So with Dialyzer there's no point in using the more expressive style.
+
+Interestingly, ETC can't unify the example:
+
+```
+unify failed with types {} :=: tuple
+```
+
+Gradualizer reports no warnings or errors. The explicit style pays off with a quick and successful type check.
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### 3. Rank-2 polymorphism
+
+Erlang spec syntax allows for higher-ranked polymorphism. Let's see how the type checkers cope with that.
+
+```
+-spec poly_2(fun((A) -> A)) -> {integer(), boolean()}.
+poly_2(F) -> {F(42), F(false)}.
+```
+
+The above code is correct and type checks with Dialyzer, Gradualizer, and ETC. Dialyzer with `-Wspecdiffs` reports that the spec is narrower than the success typing. It's a symptom of Dialyzer ignoring the extra type information provided in the spec and assuming that the implementation is the source of truth, not the spec.
+
+```
+-spec poly_fail(fun((A) -> A), boolean(), integer()) -> {boolean(), integer()}.
+poly_fail(F, B, I) -> {F(I), F(B)}.
+```
+
+The above code is not correct.
+
+Dialyzer (with no options) does not report any errors. With `-Wspecdiffs` it reports the usual warning about the spec being narrower than the success typing. However, there's no mention of the actual return value and spec return type mismatch.
+
+ETC reports a unification failure:
+
+```
+unify failed with types integer :=: boolean
+```
+
+Gradualizer does not report any errors.
+
+## Working on Gradualizer
+
+<!-- Learn more at https://mermaid-js.github.io/mermaid -->
+
+```mermaid
+graph TD;
+  A("Run Gradualizer on some code")-->B{Errors reported?};
+  B -- yes --> I
+  I(Verify the code with review and/or tests) --> C{Errors actually present?};
+  B -- no  --> F{Errors should be reported?};
+  F -- yes - we've found a false-negative --> E;
+  F -- no  --> G(Good job writing bug-free code!);
+  C -- yes --> D(Fix your bugs!);
+  C -- no - we've found a false-positive --> E(Send a PR with a test/known_problems case!);
+  E --> H(Ideally, send a PR with a fix!);
+```
