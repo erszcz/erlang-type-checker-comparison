@@ -115,6 +115,36 @@ by_test_type = %{
 
 ## Analysis and comparison
 
+```elixir
+tool_times = %{
+  "Tool" => ["Dialyzer", "ETC", "Gradualizer"],
+  "Average time" => [
+    (by_header[:dialyzer_seconds]
+     |> Enum.map(&String.to_float/1)
+     |> Enum.sum()) / length(by_header[:dialyzer_seconds]),
+    (by_header[:etc_seconds]
+     |> Enum.map(&String.to_float/1)
+     |> Enum.sum()) / length(by_header[:etc_seconds]),
+    (by_header[:gradualizer_seconds]
+     |> Enum.map(&String.to_float/1)
+     |> Enum.sum()) / length(by_header[:gradualizer_seconds])
+  ]
+}
+```
+
+#### Average runtime
+
+<!-- livebook:{"attrs":{"chart_title":null,"height":300,"layers":[{"chart_type":"bar","color_field":"Tool","color_field_aggregate":null,"color_field_type":null,"data_variable":"tool_times","x_field":"Tool","x_field_aggregate":null,"x_field_type":null,"y_field":"Average time","y_field_aggregate":null,"y_field_type":"quantitative"}],"vl_alias":"Elixir.VegaLite","width":300},"kind":"Elixir.KinoVegaLite.ChartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+VegaLite.new(width: 300, height: 300)
+|> VegaLite.data_from_values(tool_times, only: ["Tool", "Average time"])
+|> VegaLite.mark(:bar)
+|> VegaLite.encode_field(:x, "Tool")
+|> VegaLite.encode_field(:y, "Average time", type: :quantitative)
+|> VegaLite.encode_field(:color, "Tool")
+```
+
 ### Tests that should pass
 
 This chart depicts the number of tests which should pass, i.e. should type check. After all, **we do not want our type checkers to raise warnings about valid code.**
