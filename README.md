@@ -73,3 +73,10 @@ p(A, B) -> A + B.
 test() ->
     p(1, 3.2).
 ```
+
+## Slides
+
+Check out my [_What's new in Gradualizer?_ Lambda Days 2022][whats-new-ld-2022] talk
+which sums up the conclusions from this analysis.
+
+[whats-new-ld-2022]: https://www.slideshare.net/RadekSzymczyszyn/whats-new-in-gradualizer-gradually-typing-erlang-and-elixir-lambda-days-2022-254887397
