@@ -20,6 +20,8 @@ opts = %{
   dialyzer_plt: Path.join(gradualizer_dir, ".dialyzer_plt"),
 
   gradualizer: Path.join(gradualizer_dir, "bin/gradualizer"),
+
+  etylizer: "/Users/erszcz/work/etylizer/etylizer/ety"
 }
 
 
@@ -42,7 +44,8 @@ meta = %{
   gradualizer_tests: System.cmd("git", ["describe", "--tags"], cd: gradualizer_dir) |> elem(0),
   dialyzer_version: System.cmd(opts.dialyzer, ["--version"]) |> elem(0),
   etc_version: System.cmd("git", ["describe", "--tags", "--always"], cd: Path.dirname(opts.etc)) |> elem(0),
-  gradualizer_version: System.cmd(opts.gradualizer, ["--version"]) |> elem(0)
+  gradualizer_version: System.cmd(opts.gradualizer, ["--version"]) |> elem(0),
+  etylizer_version: System.cmd("git", ["describe", "--tags", "--always"], cd: Path.dirname(opts.etc)) |> elem(0)
 }
 
 IO.inspect(opts, label: "Opts")
@@ -56,6 +59,7 @@ timeout_args = ["-s", "KILL", opts.timeout]
 dialyzer_args = [opts.dialyzer, "--plt", opts.dialyzer_plt]
 etc_args = [opts.etc]
 gradualizer_args = [opts.gradualizer, "-pa", Path.join(opts.gradualizer_dir, "test_data"), "--"]
+etylizer_args = [opts.etylizer]
 
 check_one = fn args ->
   cmd = fn -> System.cmd("timeout", timeout_args ++ args, stderr_to_stdout: true) end
@@ -65,14 +69,17 @@ check_one = fn args ->
   end
 end
 
-headers = {"Test type", "Dialyzer", "ETC", "Gradualizer", "Dialyzer time", "ETC time", "Gradualizer time", "Test file"}
+#headers = {"Test type", "Dialyzer", "ETC", "Gradualizer", "Dialyzer time", "ETC time", "Gradualizer time", "Test file"}
+headers = {"Test type", "Gradualizer", "Etylizer", "Gradualizer time", "Etylizer time", "Test file"}
 
 check = fn test_type, file ->
   IO.puts file
-  {dialyzer_res, dialyzer_time} = check_one.(dialyzer_args ++ [file])
-  {etc_res, etc_time} = check_one.(etc_args ++ [file])
+  #{dialyzer_res, dialyzer_time} = check_one.(dialyzer_args ++ [file])
+  #{etc_res, etc_time} = check_one.(etc_args ++ [file])
   {gradualizer_res, gradualizer_time} = check_one.(gradualizer_args ++ [file])
-  {test_type, dialyzer_res, etc_res, gradualizer_res, dialyzer_time, etc_time, gradualizer_time, file}
+  {etylizer_res, etylizer_time} = check_one.(etylizer_args ++ [file])
+  #{test_type, dialyzer_res, etc_res, gradualizer_res, dialyzer_time, etc_time, gradualizer_time, file}
+  {test_type, gradualizer_res, etylizer_res, gradualizer_time, etylizer_time, file}
 end
 
 results_should_pass = for file <- tests.should_pass do
