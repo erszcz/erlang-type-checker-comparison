@@ -1,0 +1,567 @@
+00:10:01 erszcz @ x7 : ~/work/erszcz/erlang-type-checker-comparison (main)
+$ ./check.exs
+warning: variable "dialyzer_args" is unused (if the variable is not meant to be used, prefix it with an underscore)
+  check.exs:59
+
+warning: variable "etc_args" is unused (if the variable is not meant to be used, prefix it with an underscore)
+  check.exs:60
+
+spawn: Could not cd to /Users/erszcz/work/vrnithinkumar/ETC
+spawn: Could not cd to /Users/erszcz/work/vrnithinkumar/ETC
+Opts: %{
+  dialyzer: "dialyzer",
+  dialyzer_plt: "/Users/erszcz/work/erszcz/gradualizer/.dialyzer_plt",
+  etc: "/Users/erszcz/work/vrnithinkumar/ETC/etc",
+  etylizer: "/Users/erszcz/work/etylizer/etylizer/ety",
+  gradualizer: "/Users/erszcz/work/erszcz/gradualizer/bin/gradualizer",
+  gradualizer_dir: "/Users/erszcz/work/erszcz/gradualizer",
+  timeout: "5"
+}
+Meta: %{
+  dialyzer_version: "Dialyzer version v5.0.5\n",
+  erlang_version: "erlang          25.3.2          /Users/erszcz/.tool-versions\n",
+  etc_version: "",
+  etylizer_version: "",
+  gradualizer_tests: "0.3.0-1-g01fb022\n",
+  gradualizer_version: "Gradualizer v0.3.0-1-g01fb022\n"
+}
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/alias_in_pattern.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/andalso_any.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/ann_types.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/annotated_types.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/any.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/any_doesnt_have_type_none_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/any_pattern.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bc_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/binary_exhaustiveness_checking.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/binary_in_union.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/binary_literal_pattern.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bitstring.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/block_scope.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bool.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bounded_funs.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/call_intersection_function_with_union_arg_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/case.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/case_of_record_with_user_defined.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/catch_expr_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/covariant_map_keys_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/cyclic_otp_specs.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/erlang_error_args_none_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/exhaustiveness_union_types.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/factorial.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/float.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/flow.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/fun_capture.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/fun_spec.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/guard.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/guard_sequences_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/if_expr.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/imported.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/int.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/intersection_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/intersection_with_any_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/iodata.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/issue131.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/lc.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/lc_generator_not_none.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/lc_var_binds_in_filters.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_concat_op_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_exhaustiveness_checking_regressions.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_exhaustiveness_checking_regressions2.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_exhaustiveness_checking_unreachable_clause_regression.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_infer_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_op_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/listsspecs.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_as_argument_update.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_creation.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_field_valid_update.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_infer_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_passing_expr.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_passing_subtyping.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_pattern.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_refinement.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_update.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_update_with_record_field.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/messaging_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/minimised_gradualizer_fmt.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/minus.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/module_info.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/module_info_higher_arity.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/named_fun_infer_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/named_fun_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/negate_none.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/nested_pattern_match.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/non_neg_plus_pos_is_pos_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/nonempty_cons.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/nonempty_list_match_in_head_exhaustive.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/nonempty_string.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/nonexhaustive_record_pattern.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/opaque.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/operator_pattern_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/operator_subtypes.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/other_module.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/pattern_bind_reuse.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/pattern_record.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/pattern_with_ty_vars.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/poly_lists_map_constraints_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/poly_lists_map_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/poly_map_pattern.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/poly_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/poly_union_lower_bound_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/preludes.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/qlc_test.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/record_info.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/record_refinement.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/record_union_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/record_union_with_any_should_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/record_var.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/record_wildcard_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/record_with_user_defined.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/records.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/recursive_call_with_remote_union_return_type_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/recursive_types_passing.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/refine_comparison.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/refine_mismatch_using_guard_bifs.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/remote_types.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/remote_types_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/return_fun.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/rigid_type_variables_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/scope.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/send_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/sets_set.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/shortcut_ops_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/spec_and_fun_clause_intersection_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/stuff_as_top.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/try.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/tuple.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/tuple_union_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/tuple_union_pat.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/tuple_union_pattern_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/type_decl.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/type_pattern.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/type_refinement_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/type_variable.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/type_vars_term.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/typed_record_field_access.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/unary_negate_union_with_user_type_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/unary_plus.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/underscore.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/user_type_in_pattern_body.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/user_types.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/var.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/var_fun.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/varbind_in_block.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/varbind_in_case.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/varbind_in_function_head.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/varbind_in_lc.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/variable_binding.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_pass/variable_binding_leaks.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/arith_op_arg_types.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/binary_exhaustiveness_checking_should_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/call_intersection_function_with_union_arg_should_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/error_in_guard.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/fun_subtyping.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/generator_var_shadow.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/inner_union_subtype_of_root_union.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/intersection_should_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/intersection_with_any.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/list_concat_op_should_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/list_tail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/map_pattern_duplicate_key.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/maybe_expr.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/poly_maps_get_with_default_should_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/poly_should_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/poly_type_vars.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/recursive_types.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/refine_bound_var_on_mismatch.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/refine_bound_var_with_guard_should_pass.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/refine_list_tail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/annotated_types_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/arg.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/arith_op_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/arity_mismatch.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/bc_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/bin_expression.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/bin_type_error.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/branch.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/branch2.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/call.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/call_intersection_function_with_union_arg_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/case_pattern.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/case_pattern2.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/catch_expr_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/cons.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/covariant_map_keys_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/cyclic_type_vars.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/depth.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/exhaustive.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/exhaustive_float.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/exhaustive_list_variants.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/exhaustive_refinable_map_variants.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/exhaustive_remote_user_type.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/exhaustive_string_variants.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/exhaustive_type.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/exhaustive_user_type.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/exhaustiveness_check_toggling.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/generator.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/guard_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/imported_undef.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/infer_enabled.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/intersection_check.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/intersection_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/intersection_infer.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/intersection_with_any_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/iodata_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/lambda_not_fun.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/lc_generator_not_none_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/lc_not_list.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/list_infer_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/list_op.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/list_op_should_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/list_union_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/lists_map_nonempty_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/literal_char.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/literal_patterns.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/logic_op.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/map_entry.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/map_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/map_failing_expr.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/map_failing_subtyping.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/map_field_invalid_update.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/map_literal.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/map_pattern_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/map_refinement_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/map_type_error.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/match.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/messaging_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/module_info_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/named_fun_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/named_fun_infer_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/nil.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/no_idempotent_xor.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/non_neg_plus_pos_is_pos_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/nonempty_list_match_in_head_nonexhaustive.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/nonempty_string_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/opaque_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/operator_pattern_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/pattern.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/pattern_record_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/poly_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/poly_lists_map_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/poly_map_type_var_should_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/poly_union_lower_bound_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/pp_intersection.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/record.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/record_exhaustive.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/record_field.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/record_index.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/record_info_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/record_refinement_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/record_update.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/record_wildcard_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/recursive_type_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/recursive_types_failing.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/rel_op.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/return_fun_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/send_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/shortcut_ops_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/spec_and_fun_clause_intersection_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/string_literal.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/tuple_union_arg_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/tuple_union_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/tuple_union_pattern.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/tuple_union_refinement.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/type_refinement_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/unary_op.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/unary_plus_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/union_with_any.erl
+/Users/erszcz/work/erszcz/gradualizer/test/should_fail/unreachable_after_refinement.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/arith_op.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/binary_comprehension.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/exhaustive_argumentwise.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/exhaustive_map_variants.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/exhaustive_remote_map_variants.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/guard_should_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/infer_any_pattern.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/intersection_with_any_should_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/intersection_with_unreachable.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/lambda_wrong_args.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/map_refinement_fancy.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/poly_lists_map_should_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/recursive_types_should_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/refine_ty_vars.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/rigid_type_variables_fail.erl
+/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/sample.erl
+TSV starts here
+Test type	Gradualizer	Etylizer	Gradualizer time	Etylizer time	Test file
+should_pass	ok	failed	0.42588	0.659785	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/alias_in_pattern.erl
+should_pass	ok	failed	0.38377999999999995	0.637608	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/andalso_any.erl
+should_pass	ok	failed	0.40116	0.652886	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/ann_types.erl
+should_pass	ok	failed	0.409656	0.633735	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/annotated_types.erl
+should_pass	ok	failed	0.38687099999999996	0.7519210000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/any.erl
+should_pass	ok	failed	0.43207799999999996	0.628578	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/any_doesnt_have_type_none_pass.erl
+should_pass	ok	failed	0.39454199999999995	0.6158060000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/any_pattern.erl
+should_pass	ok	failed	0.40792500000000004	0.624026	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bc_pass.erl
+should_pass	ok	failed	0.399526	0.6472019999999999	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/binary_exhaustiveness_checking.erl
+should_pass	ok	failed	0.413067	0.623458	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/binary_in_union.erl
+should_pass	ok	failed	0.398265	0.6282490000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/binary_literal_pattern.erl
+should_pass	ok	failed	0.38469400000000004	0.6321140000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bitstring.erl
+should_pass	ok	ok	0.38666	0.661636	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/block_scope.erl
+should_pass	ok	failed	0.401991	0.658014	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bool.erl
+should_pass	ok	failed	0.393189	0.611072	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/bounded_funs.erl
+should_pass	ok	failed	0.38051799999999997	5.018893	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/call_intersection_function_with_union_arg_pass.erl
+should_pass	ok	ok	0.389291	0.604463	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/case.erl
+should_pass	ok	failed	0.424631	0.6665650000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/case_of_record_with_user_defined.erl
+should_pass	ok	failed	0.387175	0.651338	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/catch_expr_pass.erl
+should_pass	ok	failed	0.386483	0.6549360000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/covariant_map_keys_pass.erl
+should_pass	ok	failed	0.399623	0.596241	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/cyclic_otp_specs.erl
+should_pass	ok	ok	0.40769	0.6295940000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/erlang_error_args_none_pass.erl
+should_pass	ok	ok	0.389626	0.613093	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/exhaustiveness_union_types.erl
+should_pass	ok	failed	0.382289	0.836433	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/factorial.erl
+should_pass	ok	ok	0.379282	0.647415	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/float.erl
+should_pass	ok	ok	0.388095	1.043156	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/flow.erl
+should_pass	ok	ok	0.391807	0.660575	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/fun_capture.erl
+should_pass	ok	ok	0.38109699999999996	0.6318819999999999	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/fun_spec.erl
+should_pass	ok	failed	0.42036599999999996	1.491853	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/guard.erl
+should_pass	ok	failed	0.396159	5.015353	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/guard_sequences_pass.erl
+should_pass	ok	ok	0.388108	0.668363	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/if_expr.erl
+should_pass	ok	failed	0.392135	0.636261	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/imported.erl
+should_pass	ok	failed	0.384168	0.603997	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/int.erl
+should_pass	ok	ok	0.382286	1.00461	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/intersection_pass.erl
+should_pass	ok	failed	0.508382	0.629107	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/intersection_with_any_pass.erl
+should_pass	ok	failed	0.41442	0.62285	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/iodata.erl
+should_pass	ok	failed	0.37765699999999996	0.634103	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/issue131.erl
+should_pass	ok	failed	0.392269	0.659774	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/lc.erl
+should_pass	ok	failed	0.387918	0.6494460000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/lc_generator_not_none.erl
+should_pass	ok	failed	0.386341	0.59558	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/lc_var_binds_in_filters.erl
+should_pass	ok	failed	0.40111399999999997	0.8038099999999999	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list.erl
+should_pass	ok	failed	0.422435	0.619374	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_concat_op_pass.erl
+should_pass	ok	failed	0.388287	5.276746	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_exhaustiveness_checking_regressions.erl
+should_pass	ok	failed	0.410092	5.116179	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_exhaustiveness_checking_regressions2.erl
+should_pass	ok	ok	0.385031	0.597432	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_exhaustiveness_checking_unreachable_clause_regression.erl
+should_pass	ok	failed	0.388338	0.67427	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_infer_pass.erl
+should_pass	ok	ok	0.388258	0.5870700000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/list_op_pass.erl
+should_pass	ok	failed	0.42658300000000005	0.605476	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/listsspecs.erl
+should_pass	ok	failed	0.38214600000000004	0.660771	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map.erl
+should_pass	ok	failed	0.390803	0.599585	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_as_argument_update.erl
+should_pass	ok	failed	0.385091	0.63697	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_creation.erl
+should_pass	ok	failed	0.383687	0.589022	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_field_valid_update.erl
+should_pass	ok	failed	0.377729	0.619144	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_infer_pass.erl
+should_pass	ok	failed	0.37403	0.644364	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_passing_expr.erl
+should_pass	ok	failed	0.385941	0.623605	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_passing_subtyping.erl
+should_pass	ok	failed	0.38327100000000003	0.621968	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_pattern.erl
+should_pass	ok	failed	0.38714299999999996	0.613774	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_refinement.erl
+should_pass	ok	failed	0.381866	0.5913229999999999	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_update.erl
+should_pass	ok	failed	0.39155900000000005	0.627481	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/map_update_with_record_field.erl
+should_pass	ok	ok	0.43948200000000004	0.641719	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/messaging_pass.erl
+should_pass	ok	failed	0.390591	0.6350159999999999	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/minimised_gradualizer_fmt.erl
+should_pass	ok	failed	0.39588999999999996	0.604086	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/minus.erl
+should_pass	ok	failed	0.374769	0.642839	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/module_info.erl
+should_pass	ok	failed	0.42712599999999995	0.624994	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/module_info_higher_arity.erl
+should_pass	ok	failed	0.386016	0.7505499999999999	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/named_fun_infer_pass.erl
+should_pass	ok	failed	0.377376	2.994253	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/named_fun_pass.erl
+should_pass	ok	ok	0.435654	0.635771	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/negate_none.erl
+should_pass	ok	failed	0.412531	0.6615700000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/nested_pattern_match.erl
+should_pass	ok	failed	0.43618	0.6540320000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/non_neg_plus_pos_is_pos_pass.erl
+should_pass	ok	failed	0.38490199999999997	0.658318	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/nonempty_cons.erl
+should_pass	ok	failed	0.414491	0.668048	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/nonempty_list_match_in_head_exhaustive.erl
+should_pass	ok	failed	0.389064	0.645292	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/nonempty_string.erl
+should_pass	ok	failed	0.383762	0.661664	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/nonexhaustive_record_pattern.erl
+should_pass	ok	failed	0.442691	0.6442140000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/opaque.erl
+should_pass	ok	failed	0.381616	0.602429	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/operator_pattern_pass.erl
+should_pass	ok	failed	0.635147	0.6095170000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/operator_subtypes.erl
+should_pass	ok	ok	0.416301	0.577448	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/other_module.erl
+should_pass	ok	failed	0.428891	0.665023	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/pattern_bind_reuse.erl
+should_pass	ok	failed	0.410616	0.63535	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/pattern_record.erl
+should_pass	ok	ok	0.379565	0.984402	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/pattern_with_ty_vars.erl
+should_pass	ok	failed	0.455247	0.628641	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/poly_lists_map_constraints_pass.erl
+should_pass	ok	failed	0.46412	0.6738930000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/poly_lists_map_pass.erl
+should_pass	ok	failed	0.403106	0.696988	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/poly_map_pattern.erl
+should_pass	ok	failed	0.44976799999999995	0.6974170000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/poly_pass.erl
+should_pass	ok	failed	0.494966	0.644736	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/poly_union_lower_bound_pass.erl
+should_pass	ok	ok	0.43333699999999997	0.9921040000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/preludes.erl
+should_pass	ok	ok	0.586696	0.632546	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/qlc_test.erl
+should_pass	ok	failed	0.39503	0.641073	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/record_info.erl
+should_pass	ok	failed	0.413664	0.656231	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/record_refinement.erl
+should_pass	ok	failed	0.394347	0.6703210000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/record_union_pass.erl
+should_pass	ok	failed	0.388586	0.699902	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/record_union_with_any_should_pass.erl
+should_pass	ok	failed	0.404523	0.69398	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/record_var.erl
+should_pass	ok	failed	0.440699	0.702231	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/record_wildcard_pass.erl
+should_pass	ok	failed	0.419764	0.67895	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/record_with_user_defined.erl
+should_pass	ok	failed	0.41931	0.765466	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/records.erl
+should_pass	ok	failed	0.523417	1.031483	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/recursive_call_with_remote_union_return_type_pass.erl
+should_pass	ok	failed	0.457357	0.7091799999999999	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/recursive_types_passing.erl
+should_pass	ok	failed	0.402108	0.6750130000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/refine_comparison.erl
+should_pass	ok	failed	0.398158	0.632703	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/refine_mismatch_using_guard_bifs.erl
+should_pass	ok	failed	0.407731	0.669962	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/remote_types.erl
+should_pass	ok	failed	0.389337	0.6466409999999999	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/remote_types_pass.erl
+should_pass	ok	failed	0.392519	0.6678200000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/return_fun.erl
+should_pass	ok	ok	0.403006	0.645789	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/rigid_type_variables_pass.erl
+should_pass	ok	ok	0.382419	0.618919	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/scope.erl
+should_pass	ok	failed	0.38951100000000005	0.686125	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/send_pass.erl
+should_pass	ok	failed	0.430656	0.637937	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/sets_set.erl
+should_pass	ok	failed	0.39783999999999997	5.020134	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/shortcut_ops_pass.erl
+should_pass	ok	failed	0.389421	5.017332000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/spec_and_fun_clause_intersection_pass.erl
+should_pass	ok	failed	0.378574	0.630916	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/stuff_as_top.erl
+should_pass	ok	ok	0.386848	0.64083	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/try.erl
+should_pass	ok	failed	0.377061	0.655454	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/tuple.erl
+should_pass	ok	failed	0.38426299999999997	0.679269	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/tuple_union_pass.erl
+should_pass	ok	failed	0.407276	0.6600320000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/tuple_union_pat.erl
+should_pass	ok	failed	0.40601499999999996	0.621519	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/tuple_union_pattern_pass.erl
+should_pass	ok	ok	0.370329	0.627472	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/type_decl.erl
+should_pass	ok	failed	0.405755	0.648347	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/type_pattern.erl
+should_pass	ok	failed	0.400857	0.602774	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/type_refinement_pass.erl
+should_pass	ok	failed	0.393883	0.621383	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/type_variable.erl
+should_pass	ok	ok	0.38745100000000005	0.617527	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/type_vars_term.erl
+should_pass	ok	failed	0.377042	0.688998	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/typed_record_field_access.erl
+should_pass	ok	failed	0.5177780000000001	0.656821	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/unary_negate_union_with_user_type_pass.erl
+should_pass	ok	failed	0.376611	0.745572	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/unary_plus.erl
+should_pass	ok	failed	0.39149900000000004	0.663526	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/underscore.erl
+should_pass	ok	failed	0.382538	0.758432	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/user_type_in_pattern_body.erl
+should_pass	ok	failed	0.379437	0.620482	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/user_types.erl
+should_pass	ok	ok	0.382488	0.640245	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/var.erl
+should_pass	ok	failed	0.395215	0.58712	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/var_fun.erl
+should_pass	ok	failed	0.385317	0.6214189999999999	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/varbind_in_block.erl
+should_pass	ok	failed	0.37115	0.6017830000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/varbind_in_case.erl
+should_pass	ok	ok	0.422645	0.593376	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/varbind_in_function_head.erl
+should_pass	ok	failed	0.377875	0.6139450000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/varbind_in_lc.erl
+should_pass	ok	ok	0.38473	0.5936739999999999	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/variable_binding.erl
+should_pass	ok	ok	0.44533	0.6822670000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_pass/variable_binding_leaks.erl
+known_problems_should_pass	failed	failed	0.449361	0.67132	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/arith_op_arg_types.erl
+known_problems_should_pass	failed	failed	0.49589999999999995	0.6006520000000001	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/binary_exhaustiveness_checking_should_pass.erl
+known_problems_should_pass	failed	failed	0.41549	0.630542	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/call_intersection_function_with_union_arg_should_pass.erl
+known_problems_should_pass	failed	failed	0.42374	0.673374	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/error_in_guard.erl
+known_problems_should_pass	failed	ok	0.41897	0.605675	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/fun_subtyping.erl
+known_problems_should_pass	failed	ok	0.424664	0.639383	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/generator_var_shadow.erl
+known_problems_should_pass	failed	failed	0.423591	0.6347480000000001	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/inner_union_subtype_of_root_union.erl
+known_problems_should_pass	failed	failed	0.41418099999999997	0.644889	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/intersection_should_pass.erl
+known_problems_should_pass	failed	failed	0.417987	0.6342300000000001	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/intersection_with_any.erl
+known_problems_should_pass	failed	failed	0.426832	0.621388	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/list_concat_op_should_pass.erl
+known_problems_should_pass	failed	ok	0.423495	0.5857469999999999	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/list_tail.erl
+known_problems_should_pass	failed	failed	0.41050200000000003	0.622812	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/map_pattern_duplicate_key.erl
+known_problems_should_pass	failed	failed	0.381168	0.603719	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/maybe_expr.erl
+known_problems_should_pass	failed	failed	0.411949	0.607407	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/poly_maps_get_with_default_should_pass.erl
+known_problems_should_pass	failed	failed	0.48124700000000004	5.011433	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/poly_should_pass.erl
+known_problems_should_pass	failed	failed	0.448618	0.632561	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/poly_type_vars.erl
+known_problems_should_pass	failed	failed	0.467088	0.695773	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/recursive_types.erl
+known_problems_should_pass	failed	ok	0.431821	0.6120650000000001	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/refine_bound_var_on_mismatch.erl
+known_problems_should_pass	failed	failed	0.425028	0.640496	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/refine_bound_var_with_guard_should_pass.erl
+known_problems_should_pass	failed	failed	0.428037	0.6279349999999999	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_pass/refine_list_tail.erl
+should_fail	failed	failed	0.441894	0.638664	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/annotated_types_fail.erl
+should_fail	failed	failed	0.43232	0.6229	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/arg.erl
+should_fail	failed	failed	0.45169099999999995	0.650144	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/arith_op_fail.erl
+should_fail	failed	failed	0.407804	0.632914	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/arity_mismatch.erl
+should_fail	failed	failed	0.451868	0.6137870000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/bc_fail.erl
+should_fail	failed	failed	0.430525	0.5946710000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/bin_expression.erl
+should_fail	failed	failed	0.43079199999999995	0.621947	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/bin_type_error.erl
+should_fail	failed	failed	0.452351	0.654027	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/branch.erl
+should_fail	failed	failed	0.500481	0.647223	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/branch2.erl
+should_fail	failed	failed	0.441888	0.633537	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/call.erl
+should_fail	failed	failed	0.444084	0.663321	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/call_intersection_function_with_union_arg_fail.erl
+should_fail	failed	ok	0.465148	0.668179	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/case_pattern.erl
+should_fail	failed	ok	0.422	0.646772	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/case_pattern2.erl
+should_fail	failed	failed	0.43598200000000004	0.6464139999999999	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/catch_expr_fail.erl
+should_fail	failed	failed	0.44817	0.6595979999999999	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/cons.erl
+should_fail	failed	failed	0.445224	0.654192	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/covariant_map_keys_fail.erl
+should_fail	failed	failed	0.419651	0.6349400000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/cyclic_type_vars.erl
+should_fail	failed	failed	0.429096	0.6257469999999999	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/depth.erl
+should_fail	failed	failed	0.414702	0.6321559999999999	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/exhaustive.erl
+should_fail	failed	failed	0.41463900000000004	0.6370750000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/exhaustive_float.erl
+should_fail	failed	failed	0.558234	0.6407619999999999	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/exhaustive_list_variants.erl
+should_fail	failed	failed	0.5840810000000001	0.719223	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/exhaustive_refinable_map_variants.erl
+should_fail	failed	failed	0.43230399999999997	0.795442	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/exhaustive_remote_user_type.erl
+should_fail	failed	failed	0.409206	0.651573	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/exhaustive_string_variants.erl
+should_fail	failed	failed	0.41776100000000005	0.6404500000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/exhaustive_type.erl
+should_fail	failed	failed	0.42606299999999997	0.666114	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/exhaustive_user_type.erl
+should_fail	failed	failed	0.414567	0.650028	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/exhaustiveness_check_toggling.erl
+should_fail	failed	ok	0.484481	0.63647	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/generator.erl
+should_fail	failed	failed	0.471579	1.453246	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/guard_fail.erl
+should_fail	failed	failed	0.396937	0.606379	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/imported_undef.erl
+should_fail	failed	ok	0.420067	0.598935	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/infer_enabled.erl
+should_fail	failed	failed	0.498	0.635567	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/intersection_check.erl
+should_fail	failed	failed	0.415933	0.6446470000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/intersection_fail.erl
+should_fail	failed	ok	0.415947	0.618694	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/intersection_infer.erl
+should_fail	failed	failed	0.427536	0.6376860000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/intersection_with_any_fail.erl
+should_fail	failed	failed	0.426378	0.630254	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/iodata_fail.erl
+should_fail	failed	ok	0.42752100000000004	0.6205890000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/lambda_not_fun.erl
+should_fail	failed	failed	0.395339	0.6457430000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/lc_generator_not_none_fail.erl
+should_fail	failed	ok	0.43273700000000004	0.635223	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/lc_not_list.erl
+should_fail	failed	ok	0.43301100000000003	0.6225320000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/list_infer_fail.erl
+should_fail	failed	failed	0.43165499999999996	0.667617	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/list_op.erl
+should_fail	failed	failed	0.44868	0.634937	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/list_op_should_fail.erl
+should_fail	failed	ok	0.414566	0.611247	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/list_union_fail.erl
+should_fail	failed	failed	0.44638799999999995	0.623595	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/lists_map_nonempty_fail.erl
+should_fail	failed	failed	0.42568	0.685849	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/literal_char.erl
+should_fail	failed	failed	0.410968	0.7081580000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/literal_patterns.erl
+should_fail	failed	failed	0.450775	0.647467	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/logic_op.erl
+should_fail	failed	failed	0.455864	0.712032	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/map_entry.erl
+should_fail	failed	failed	0.46786500000000003	0.714175	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/map_fail.erl
+should_fail	failed	ok	0.445603	0.6652469999999999	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/map_failing_expr.erl
+should_fail	failed	failed	0.417586	0.688557	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/map_failing_subtyping.erl
+should_fail	failed	failed	0.424406	0.6531910000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/map_field_invalid_update.erl
+should_fail	failed	ok	0.430908	0.689605	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/map_literal.erl
+should_fail	failed	failed	0.563156	0.624206	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/map_pattern_fail.erl
+should_fail	failed	failed	0.43114600000000003	0.641161	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/map_refinement_fail.erl
+should_fail	failed	ok	0.439864	0.59708	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/map_type_error.erl
+should_fail	failed	ok	0.435884	0.623408	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/match.erl
+should_fail	failed	ok	0.470154	0.695375	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/messaging_fail.erl
+should_fail	failed	failed	0.443455	0.707058	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/module_info_fail.erl
+should_fail	failed	failed	0.456035	0.6724070000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/named_fun_fail.erl
+should_fail	failed	failed	0.427898	0.724954	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/named_fun_infer_fail.erl
+should_fail	failed	failed	0.433127	0.647087	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/nil.erl
+should_fail	failed	failed	0.431888	0.637289	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/no_idempotent_xor.erl
+should_fail	failed	failed	0.43675400000000003	0.658827	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/non_neg_plus_pos_is_pos_fail.erl
+should_fail	failed	failed	0.42175	0.656169	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/nonempty_list_match_in_head_nonexhaustive.erl
+should_fail	failed	failed	0.429259	0.642415	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/nonempty_string_fail.erl
+should_fail	failed	failed	0.460172	0.6787190000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/opaque_fail.erl
+should_fail	failed	failed	0.428674	0.704031	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/operator_pattern_fail.erl
+should_fail	failed	failed	0.442544	0.651657	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/pattern.erl
+should_fail	failed	failed	0.427134	0.635196	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/pattern_record_fail.erl
+should_fail	failed	failed	0.487576	5.01234	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/poly_fail.erl
+should_fail	failed	failed	0.572538	0.659462	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/poly_lists_map_fail.erl
+should_fail	failed	failed	0.440488	0.695178	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/poly_map_type_var_should_fail.erl
+should_fail	failed	failed	0.450918	0.605379	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/poly_union_lower_bound_fail.erl
+should_fail	failed	failed	0.430876	2.141835	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/pp_intersection.erl
+should_fail	failed	ok	0.441007	0.635916	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/record.erl
+should_fail	failed	failed	0.429959	0.698138	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/record_exhaustive.erl
+should_fail	failed	failed	0.43869600000000003	0.661788	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/record_field.erl
+should_fail	failed	ok	0.44578500000000004	0.6178250000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/record_index.erl
+should_fail	failed	failed	0.42955200000000004	0.644254	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/record_info_fail.erl
+should_fail	failed	failed	0.43316899999999997	0.643732	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/record_refinement_fail.erl
+should_fail	failed	failed	0.509864	0.654716	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/record_update.erl
+should_fail	failed	failed	0.432738	0.619094	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/record_wildcard_fail.erl
+should_fail	failed	failed	0.45618200000000003	0.662858	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/recursive_type_fail.erl
+should_fail	failed	failed	0.43233499999999997	0.668179	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/recursive_types_failing.erl
+should_fail	failed	failed	0.429259	0.647427	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/rel_op.erl
+should_fail	failed	failed	0.447317	0.6325	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/return_fun_fail.erl
+should_fail	failed	failed	0.42477800000000004	0.613167	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/send_fail.erl
+should_fail	failed	failed	0.47170999999999996	0.649419	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/shortcut_ops_fail.erl
+should_fail	failed	failed	0.44112799999999996	0.640452	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/spec_and_fun_clause_intersection_fail.erl
+should_fail	failed	failed	0.438153	0.623279	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/string_literal.erl
+should_fail	failed	failed	0.412297	0.6356660000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/tuple_union_arg_fail.erl
+should_fail	failed	failed	0.45161700000000005	0.6467780000000001	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/tuple_union_fail.erl
+should_fail	failed	failed	0.420586	0.683461	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/tuple_union_pattern.erl
+should_fail	failed	failed	0.431718	0.665489	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/tuple_union_refinement.erl
+should_fail	failed	failed	0.483508	0.701842	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/type_refinement_fail.erl
+should_fail	failed	failed	0.437239	0.734389	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/unary_op.erl
+should_fail	failed	failed	0.440125	0.623852	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/unary_plus_fail.erl
+should_fail	failed	failed	0.433819	0.723831	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/union_with_any.erl
+should_fail	failed	ok	0.451825	0.685219	/Users/erszcz/work/erszcz/gradualizer/test/should_fail/unreachable_after_refinement.erl
+known_problems_should_fail	ok	failed	0.387274	0.639364	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/arith_op.erl
+known_problems_should_fail	ok	failed	0.396252	0.6167670000000001	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/binary_comprehension.erl
+known_problems_should_fail	ok	failed	0.386836	0.632604	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/exhaustive_argumentwise.erl
+known_problems_should_fail	ok	failed	0.388034	0.6213719999999999	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/exhaustive_map_variants.erl
+known_problems_should_fail	ok	failed	0.39628199999999997	0.602767	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/exhaustive_remote_map_variants.erl
+known_problems_should_fail	ok	failed	0.385014	5.280625	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/guard_should_fail.erl
+known_problems_should_fail	ok	failed	0.410196	0.648384	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/infer_any_pattern.erl
+known_problems_should_fail	ok	failed	0.39858	0.630512	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/intersection_with_any_should_fail.erl
+known_problems_should_fail	ok	failed	0.448504	5.016149	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/intersection_with_unreachable.erl
+known_problems_should_fail	ok	failed	0.41934699999999997	0.6251530000000001	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/lambda_wrong_args.erl
+known_problems_should_fail	ok	failed	0.383625	0.632082	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/map_refinement_fancy.erl
+known_problems_should_fail	ok	failed	0.411766	0.585405	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/poly_lists_map_should_fail.erl
+known_problems_should_fail	failed	failed	1.418888	0.6352190000000001	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/recursive_types_should_fail.erl
+known_problems_should_fail	ok	ok	0.411719	0.9934529999999999	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/refine_ty_vars.erl
+known_problems_should_fail	ok	failed	0.38452	0.6281570000000001	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/rigid_type_variables_fail.erl
+known_problems_should_fail	ok	failed	0.386115	2.281221	/Users/erszcz/work/erszcz/gradualizer/test/known_problems/should_fail/sample.erl
