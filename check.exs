@@ -10,7 +10,7 @@ opts = %{
   gradualizer_dir: gradualizer_dir,
 
   ## How many seconds can each tool run on a single file?
-  timeout: 5 |> to_string(),
+  timeout_seconds: 5 |> to_string(),
 
   ## Please note ETC should be modified to properly return the error code to the shell.
   ## See https://github.com/erszcz/ETC/commit/677c763d93fae7fdc326cd9e028c0f59f1803037
@@ -31,24 +31,23 @@ opts = %{
 
 tests = %{
   ## debug only
-  #should_pass: [
-  #  "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/unary_plus.erl",
-  #  "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/user_type_in_pattern_body.erl"
-  #],
-  should_pass: Path.wildcard("#{gradualizer_dir}/test/should_pass/*.erl"),
-  known_problems_should_pass: Path.wildcard("#{gradualizer_dir}/test/known_problems/should_pass/*.erl"),
-  should_fail: Path.wildcard("#{gradualizer_dir}/test/should_fail/*.erl"),
-  known_problems_should_fail: Path.wildcard("#{gradualizer_dir}/test/known_problems/should_fail/*.erl")
+  should_pass: [
+    #"/Users/erszcz/work/erszcz/gradualizer/test/should_pass/unary_plus.erl",
+    "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/user_type_in_pattern_body.erl"
+  ],
+  should_fail: [
+    "/Users/erszcz/work/erszcz/gradualizer/test/should_fail/case_pattern.erl"
+  ]
+
+  #should_pass: Path.wildcard("#{gradualizer_dir}/test/should_pass/*.erl"),
+  #known_problems_should_pass: Path.wildcard("#{gradualizer_dir}/test/known_problems/should_pass/*.erl"),
+  #should_fail: Path.wildcard("#{gradualizer_dir}/test/should_fail/*.erl"),
+  #known_problems_should_fail: Path.wildcard("#{gradualizer_dir}/test/known_problems/should_fail/*.erl")
 }
 
 meta = %{
-  erlang_version: System.cmd("asdf", ["current", "erlang"]) |> elem(0),
-  gradualizer_tests: System.cmd("git", ["describe", "--tags"], cd: gradualizer_dir) |> elem(0),
-  dialyzer_version: System.cmd(opts.dialyzer, ["--version"]) |> elem(0),
-  etc_version: System.cmd("git", ["describe", "--tags", "--always"], cd: Path.dirname(opts.etc)) |> elem(0),
-  gradualizer_version: System.cmd(opts.gradualizer, ["--version"]) |> elem(0),
-  etylizer_version: System.cmd("git", ["describe", "--tags", "--always"], cd: Path.dirname(opts.etylizer)) |> elem(0),
-  eqwalizer_version: System.cmd(opts.eqwalizer, ["version"]) |> elem(0)
+  erlang_version: System.cmd("asdf", ["current", "erlang"]) |> elem(0) |> String.trim(),
+  gradualizer_tests: System.cmd("git", ["describe", "--tags"], cd: gradualizer_dir) |> elem(0) |> String.trim(),
 }
 
 IO.inspect(opts, label: "Opts")
@@ -58,12 +57,7 @@ IO.inspect(meta, label: "Meta")
 
 # Let's roll
 
-timeout_args = ["-s", "KILL", opts.timeout]
-dialyzer_args = [opts.dialyzer, "--plt", opts.dialyzer_plt]
-etc_args = [opts.etc]
-gradualizer_args = [opts.gradualizer, "-pa", Path.join(opts.gradualizer_dir, "test_data"), "--"]
-etylizer_args = [opts.etylizer]
-eqwalizer_args = [opts.etylizer, "eqwalize"]
+timeout_args = ["-s", "KILL", opts.timeout_seconds]
 
 check_one = fn args ->
   cmd = fn -> System.cmd("timeout", timeout_args ++ args, stderr_to_stdout: true) end
@@ -73,71 +67,101 @@ check_one = fn args ->
   end
 end
 
-#headers = {"Test type", "Dialyzer", "ETC", "Gradualizer", "Dialyzer time", "ETC time", "Gradualizer time", "Test file"}
-headers = {
-  "Test type",
-  "Gradualizer",
-  "Etylizer",
-  "Eqwalizer",
-  "Gradualizer time",
-  "Etylizer time",
-  "Eqwalizer time",
-  "Test file"
-}
+tools = [
+  #dialyzer: %{
+  #  args: [opts.dialyzer, "--plt", opts.dialyzer_plt],
+  #  prep: & &1,
+  #  exec: check_one,
+  #  vsn: System.cmd(opts.dialyzer, ["--version"]) |> elem(0) |> String.trim()
+  #},
+  gradualizer: %{
+    args: [opts.gradualizer, "-pa", Path.join(opts.gradualizer_dir, "test_data"), "--"],
+    prep: & &1,
+    exec: check_one,
+    vsn: System.cmd(opts.gradualizer, ["--version"]) |> elem(0) |> String.trim()
+  },
+  etylizer: %{
+    args: [opts.etylizer],
+    prep: & &1,
+    exec: check_one,
+    vsn: System.cmd("git", ["describe", "--tags", "--always"], cd: Path.dirname(opts.etylizer)) |> elem(0) |> String.trim()
+  }
+  #eqwalizer: %{
+  #  args: [opts.eqwalizer, "eqwalize", "--project", Path.join(opts.gradualizer_dir, "build_info.json")],
+  #  prep: fn args ->
+  #    {args, [module_path]} = :lists.split(length(args) - 1, args)
+  #    module_name = Path.basename(module_path, ".erl")
+  #    args ++ [module_name]
+  #  end,
+  #  exec: check_one,
+  #  vsn: System.cmd("git", ["describe", "--tags", "--always"], cd: Path.dirname(opts.eqwalizer)) |> elem(0) |> String.trim()
+  #}
+]
 
-check = fn test_type, file ->
-  IO.puts file
-  #{dialyzer_res, dialyzer_time} = check_one.(dialyzer_args ++ [file])
-  #{etc_res, etc_time} = check_one.(etc_args ++ [file])
-  {gradualizer_res, gradualizer_time} = check_one.(gradualizer_args ++ [file])
-  {etylizer_res, etylizer_time} = check_one.(etylizer_args ++ [file])
-  {eqwalizer_res, eqwalizer_time} = check_one.(eqwalizer_args ++ [file])
-  #{test_type, dialyzer_res, etc_res, gradualizer_res, dialyzer_time, etc_time, gradualizer_time, file}
+IO.inspect tools, label: "Tools"
+
+all_tests = Enum.map(tests.should_pass, &{:should_pass, &1})
+            ++ Enum.map(tests.should_fail, &{:should_fail, &1})
+            #++ Enum.map(tests.known_problems_should_pass, &{:known_problems_should_pass, &1})
+            #++ Enum.map(tests.known_problems_should_fail, &{:known_problems_should_fail, &1})
+
+#IO.inspect all_tests, label: "All tests"
+
+results = for {tool, spec} <- tools, into: [] do
+  %{prep: prep, exec: exec, args: args} = spec
   {
-    test_type,
-    gradualizer_res,
-    etylizer_res,
-    eqwalizer_res,
-    gradualizer_time,
-    etylizer_time,
-    eqwalizer_time,
-    file
+    tool,
+    all_tests
+    |> Enum.map(fn {test_type, file} ->
+      args = prep.(args ++ [file])
+      cmd = args |> Enum.join(" ")
+      IO.inspect(cmd, label: "Running")
+
+      {res, time} = exec.(args)
+      {
+        file,
+        [
+          tool: tool,
+          test_type: test_type,
+          status: res,
+          time: time,
+          file: file,
+          cmd: cmd
+        ]
+      }
+    end)
+    |> Enum.into(%{})
   }
 end
 
-results_should_pass = for file <- tests.should_pass do
-  check.(:should_pass, file)
-end
+#IO.inspect results, label: "Results"
 
-results_known_problems_should_pass = for file <- tests.known_problems_should_pass do
-  check.(:known_problems_should_pass, file)
-end
+tool_names = tools |> Keyword.keys() |> Enum.map(& &1 |> to_string() |> String.capitalize())
 
-results_should_fail = for file <- tests.should_fail do
-  check.(:should_fail, file)
-end
-
-results_known_problems_should_fail = for file <- tests.known_problems_should_fail do
-  check.(:known_problems_should_fail, file)
-end
-
-results = (
-  results_should_pass
-  ++ results_known_problems_should_pass
-  ++ results_should_fail
-  ++ results_known_problems_should_fail
-)
+headers = ["Test type"]
+          ++ tool_names
+          ++ (tool_names |> Enum.map(& &1 <> " time"))
+          ++ ["Test file"]
 
 #IO.inspect(headers, label: "Headers")
-#IO.inspect(results, label: "results", limit: :infinity)
 
-IO.puts "TSV starts here"
+IO.puts "\nTSV starts here\n"
 
-headers |> Tuple.to_list() |> Enum.intersperse("\t") |> IO.puts()
+headers |> Enum.intersperse("\t") |> IO.puts()
 
-for row <- results do
+rows = for {test_type, file} <- all_tests do
+  [test_type]
+  ++ for {_tool, tool_results} <- results do
+    tool_results[file][:status]
+  end
+  ++ for {_tool, tool_results} <- results do
+    tool_results[file][:time]
+  end
+  ++ [file]
+end
+
+for row <- rows do
   row
-  |> Tuple.to_list()
   |> Enum.map(&to_string/1)
   |> Enum.intersperse("\t")
   |> IO.puts()
