@@ -62,8 +62,8 @@ timeout_args = ["-s", "KILL", opts.timeout_seconds]
 check_one = fn args ->
   cmd = fn -> System.cmd("timeout", timeout_args ++ args, stderr_to_stdout: true) end
   case :timer.tc(cmd) do
-    {micros, {_, 0}} -> {:ok, micros / 1000.0 / 1000.0}
-    {micros, _} -> {:failed, micros / 1000.0 / 1000.0}
+    {micros, {output, 0}} -> {:ok, micros / 1000.0 / 1000.0, output}
+    {micros, {output, _}} -> {:failed, micros / 1000.0 / 1000.0, output}
   end
 end
 
@@ -117,7 +117,7 @@ results = for {tool, spec} <- tools, into: [] do
       cmd = args |> Enum.join(" ")
       IO.inspect(cmd, label: "Running")
 
-      {res, time} = exec.(args)
+      {res, time, output} = exec.(args)
       {
         file,
         [
@@ -126,7 +126,8 @@ results = for {tool, spec} <- tools, into: [] do
           status: res,
           time: time,
           file: file,
-          cmd: cmd
+          cmd: cmd,
+          output: output
         ]
       }
     end)
