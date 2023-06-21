@@ -101,9 +101,9 @@ tools = [
 IO.inspect tools, label: "Tools"
 
 all_tests = Enum.map(tests.should_pass, &{:should_pass, &1})
+            ++ Enum.map(tests.known_problems_should_pass, &{:known_problems_should_pass, &1})
             ++ Enum.map(tests.should_fail, &{:should_fail, &1})
-            #++ Enum.map(tests.known_problems_should_pass, &{:known_problems_should_pass, &1})
-            #++ Enum.map(tests.known_problems_should_fail, &{:known_problems_should_fail, &1})
+            ++ Enum.map(tests.known_problems_should_fail, &{:known_problems_should_fail, &1})
 
 #IO.inspect all_tests, label: "All tests"
 
