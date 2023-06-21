@@ -86,6 +86,7 @@ tools = [
     exec: check_one,
     vsn: System.cmd("git", ["describe", "--tags", "--always"], cd: Path.dirname(opts.etylizer)) |> elem(0) |> String.trim()
   },
+  ## TODO: eqwalizer does not report the error code, so we have to inspect output :(
   eqwalizer: %{
     args: [opts.eqwalizer, "eqwalize", "--project", Path.join(opts.gradualizer_dir, "build_info.json")],
     prep: fn args ->
