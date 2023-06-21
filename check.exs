@@ -85,17 +85,17 @@ tools = [
     prep: & &1,
     exec: check_one,
     vsn: System.cmd("git", ["describe", "--tags", "--always"], cd: Path.dirname(opts.etylizer)) |> elem(0) |> String.trim()
+  },
+  eqwalizer: %{
+    args: [opts.eqwalizer, "eqwalize", "--project", Path.join(opts.gradualizer_dir, "build_info.json")],
+    prep: fn args ->
+      {args, [module_path]} = :lists.split(length(args) - 1, args)
+      module_name = Path.basename(module_path, ".erl")
+      args ++ [module_name]
+    end,
+    exec: check_one,
+    vsn: System.cmd("git", ["describe", "--tags", "--always"], cd: Path.dirname(opts.eqwalizer)) |> elem(0) |> String.trim()
   }
-  #eqwalizer: %{
-  #  args: [opts.eqwalizer, "eqwalize", "--project", Path.join(opts.gradualizer_dir, "build_info.json")],
-  #  prep: fn args ->
-  #    {args, [module_path]} = :lists.split(length(args) - 1, args)
-  #    module_name = Path.basename(module_path, ".erl")
-  #    args ++ [module_name]
-  #  end,
-  #  exec: check_one,
-  #  vsn: System.cmd("git", ["describe", "--tags", "--always"], cd: Path.dirname(opts.eqwalizer)) |> elem(0) |> String.trim()
-  #}
 ]
 
 IO.inspect tools, label: "Tools"
