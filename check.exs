@@ -86,7 +86,6 @@ tools = [
     exec: check_one,
     vsn: System.cmd("git", ["describe", "--tags", "--always"], cd: Path.dirname(opts.etylizer)) |> elem(0) |> String.trim()
   },
-  ## TODO: eqwalizer does not report the error code, so we have to inspect output :(
   eqwalizer: %{
     args: [opts.eqwalizer, "eqwalize", "--project", Path.join(opts.gradualizer_dir, "build_info.json")],
     prep: fn args ->
@@ -94,7 +93,14 @@ tools = [
       module_name = Path.basename(module_path, ".erl")
       args ++ [module_name]
     end,
-    exec: check_one,
+    exec: fn args ->
+      {_status, time, output} = check_one.(args)
+      if String.match?(output, ~r/NO ERROR/) do
+        {:ok, time, output}
+      else
+        {:failed, time, output}
+      end
+    end,
     vsn: System.cmd("git", ["describe", "--tags", "--always"], cd: Path.dirname(opts.eqwalizer)) |> elem(0) |> String.trim()
   }
 ]
