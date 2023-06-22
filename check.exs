@@ -31,19 +31,18 @@ opts = %{
 
 tests = %{
   ## debug only
-  should_pass: [
-    #"/Users/erszcz/work/erszcz/gradualizer/test/should_pass/unary_plus.erl",
-    "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/user_type_in_pattern_body.erl"
-  ],
-  should_fail: [
-    #"/Users/erszcz/work/erszcz/gradualizer/test/should_fail/case_pattern.erl",
-    "/Users/erszcz/work/erszcz/gradualizer/test/should_fail/arity_mismatch.erl"
-  ]
+  #should_pass: [
+  #  "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/unary_plus.erl",
+  #  "/Users/erszcz/work/erszcz/gradualizer/test/should_pass/user_type_in_pattern_body.erl"
+  #],
+  #should_fail: [
+  #  "/Users/erszcz/work/erszcz/gradualizer/test/should_fail/case_pattern.erl"
+  #]
 
-  #should_pass: Path.wildcard("#{gradualizer_dir}/test/should_pass/*.erl"),
-  #known_problems_should_pass: Path.wildcard("#{gradualizer_dir}/test/known_problems/should_pass/*.erl"),
-  #should_fail: Path.wildcard("#{gradualizer_dir}/test/should_fail/*.erl"),
-  #known_problems_should_fail: Path.wildcard("#{gradualizer_dir}/test/known_problems/should_fail/*.erl")
+  should_pass: Path.wildcard("#{gradualizer_dir}/test/should_pass/*.erl"),
+  known_problems_should_pass: Path.wildcard("#{gradualizer_dir}/test/known_problems/should_pass/*.erl"),
+  should_fail: Path.wildcard("#{gradualizer_dir}/test/should_fail/*.erl"),
+  known_problems_should_fail: Path.wildcard("#{gradualizer_dir}/test/known_problems/should_fail/*.erl")
 }
 
 meta = %{
@@ -109,9 +108,9 @@ tools = [
 IO.inspect tools, label: "Tools"
 
 all_tests = Enum.map(tests.should_pass, &{:should_pass, &1})
-            #++ Enum.map(tests.known_problems_should_pass, &{:known_problems_should_pass, &1})
+            ++ Enum.map(tests.known_problems_should_pass, &{:known_problems_should_pass, &1})
             ++ Enum.map(tests.should_fail, &{:should_fail, &1})
-            #++ Enum.map(tests.known_problems_should_fail, &{:known_problems_should_fail, &1})
+            ++ Enum.map(tests.known_problems_should_fail, &{:known_problems_should_fail, &1})
 
 #IO.inspect all_tests, label: "All tests"
 
